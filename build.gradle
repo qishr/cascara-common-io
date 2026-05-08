@@ -1,0 +1,26 @@
+plugins {
+    id 'maven-publish'
+    id "io.github.qishr.cascara.meta.java-library" version "0.1.0"
+    id "io.github.qishr.cascara.meta.publish" version "0.1.0"
+}
+
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+
+dependencies {
+    implementation(platform("io.github.qishr:cascara-meta-bom:0.1.0"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testRuntimeOnly('org.junit.platform:junit-platform-launcher')
+
+    implementation("io.github.qishr:cascara-common")
+    implementation("io.github.qishr:cascara-lang-yaml")
+}
+
