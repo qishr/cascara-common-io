@@ -25,7 +25,8 @@ public class IOUtils {
         providers.put(UriScheme.FILE, new FileResourceProvider());
         providers.put(UriScheme.HTTP, new HttpResourceProvider());
         providers.put(UriScheme.HTTPS, new HttpResourceProvider());
-        providers.put(UriScheme.RES, new ResResourceProvider());
+        // Don't register UriScheme.RES here.
+        // Let the application register its own one so we can access its resources.
     }
 
     public static void setResourceProvider(UriScheme uriScheme, ResourceProvider provider) {

@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
+import io.github.qishr.cascara.common.util.Properties;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.util.ContentType;
-import io.github.qishr.cascara.common.util.Table;
+import io.github.qishr.cascara.common.data.Table;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
 
 public class ContentTypeStore implements ContentTypeResolver {
@@ -21,12 +22,21 @@ public class ContentTypeStore implements ContentTypeResolver {
     private static final Path registryPath = cascaraDir.resolve("canonical-content-types.yaml");
 
     private static ContentTypeStore instance;
+    private static Properties serviceProperties;
 
     private Reporter reporter = new NoOpReporter();
     private ContentTypeRegistry contentTypeRegistry;
 
     private ContentTypeStore() {
         init();
+    }
+
+    @Override
+    public Properties getServiceProperties() {
+        if (serviceProperties == null) {
+            serviceProperties = new Properties();
+        }
+        return serviceProperties;
     }
 
     private void init() {
@@ -199,7 +209,7 @@ public class ContentTypeStore implements ContentTypeResolver {
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
         } catch (IOException e) {
-            reporter.error("Failed to write debug output: " + e.getMessage());
+            reporter.error(null, "Failed to write debug output: " + e.getMessage());
         }
     }
 }

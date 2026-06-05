@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
-import io.github.qishr.cascara.common.util.Table;
+import io.github.qishr.cascara.common.data.Table;
 import io.github.qishr.cascara.common.util.ContentType;
 
 public final class ContentTypeNormalizer {
@@ -249,7 +249,7 @@ public final class ContentTypeNormalizer {
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
         } catch (IOException e) {
-            reporter.error("Failed to write debug output: " + e.getMessage());
+            reporter.error(null, "Failed to write debug output: " + e.getMessage());
         }
     }
 }

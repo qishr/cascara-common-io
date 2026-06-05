@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.qishr.cascara.common.diagnostic.SimpleReporter;
+import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.util.ContentType;
 
@@ -24,7 +24,7 @@ public class NormalizerTests {
 
         ContentTypeRegistry registry = new ContentTypeRegistry();
         ContentTypeNormalizer normalizer = new ContentTypeNormalizer();
-        normalizer.setReporter(new SimpleReporter().setLevel(Level.DEBUG));
+        normalizer.setReporter(new StandardReporter().setLevel(Level.DEBUG));
 
         List<MergedContentType> merged = normalizer.normalize(contentTypes);
         ContentTypeStore.instance().reconcile(merged, registry);
@@ -45,7 +45,7 @@ public class NormalizerTests {
 
         ContentTypeRegistry registry = new ContentTypeRegistry();
         ContentTypeNormalizer normalizer = new ContentTypeNormalizer();
-        normalizer.setReporter(new SimpleReporter().setLevel(Level.DEBUG));
+        normalizer.setReporter(new StandardReporter().setLevel(Level.DEBUG));
 
         List<MergedContentType> merged = normalizer.normalize(contentTypes);
         ContentTypeStore.instance().reconcile(merged, registry);
