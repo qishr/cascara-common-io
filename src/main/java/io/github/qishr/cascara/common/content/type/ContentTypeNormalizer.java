@@ -12,8 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
+import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.data.Table;
 import io.github.qishr.cascara.common.util.ContentType;
 
@@ -248,8 +250,8 @@ public final class ContentTypeNormalizer {
         try (StringWriter writer = new StringWriter()){
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
-        } catch (IOException e) {
-            reporter.error(null, "Failed to write debug output: " + e.getMessage());
+        } catch (IOException | LocalizableIOException e) {
+            reporter.error(GenericDiagnosticCode.IO_ERROR, "Failed to write debug output: " + e.getMessage());
         }
     }
 }

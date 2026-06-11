@@ -11,8 +11,10 @@ import java.util.Set;
 
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.common.util.Properties;
+import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
+import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.data.Table;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
@@ -46,7 +48,7 @@ public class ContentTypeStore implements ContentTypeResolver {
             try {
                 yamlContent = Files.readString(registryPath);
             } catch (IOException e) {
-                throw new ContentTypeException("Failed to read content type registry", e);
+                throw new ContentTypeException(e, ContentTypeDiagnosticCode.REGISTRY_READ_ERROR);
             }
             contentTypeRegistry = serializer.fromText(yamlContent, ContentTypeRegistry.class);
         } else {
@@ -119,7 +121,7 @@ public class ContentTypeStore implements ContentTypeResolver {
             Files.writeString(registryPath, yamlContent);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new ContentTypeException("Failed to update content type registry", e);
+            throw new ContentTypeException(e, ContentTypeDiagnosticCode.REGISTRY_UPDATE_ERROR);
         }
     }
 
@@ -208,8 +210,8 @@ public class ContentTypeStore implements ContentTypeResolver {
         try (StringWriter writer = new StringWriter()){
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
-        } catch (IOException e) {
-            reporter.error(null, "Failed to write debug output: " + e.getMessage());
+        } catch (IOException | LocalizableIOException e) {
+            reporter.error(GenericDiagnosticCode.IO_ERROR, "Failed to write debug output: " + e.getMessage());
         }
     }
 }

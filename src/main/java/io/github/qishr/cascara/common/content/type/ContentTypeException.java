@@ -1,23 +1,19 @@
 package io.github.qishr.cascara.common.content.type;
 
-import io.github.qishr.cascara.common.util.CascaraRuntimeException;
+import io.github.qishr.cascara.common.diagnostic.LocalizableRuntimeException;
+import io.github.qishr.cascara.common.diagnostic.code.DiagnosticCode;
 import io.github.qishr.cascara.common.util.ContentType;
 
-public class ContentTypeException extends CascaraRuntimeException {
+public class ContentTypeException extends LocalizableRuntimeException {
     private final ContentType contentType;
 
-    public ContentTypeException(String message) {
-        super(message);
+    public ContentTypeException(DiagnosticCode code, Object... details) {
+        super(code, details);
         this.contentType = null;
     }
 
-    public ContentTypeException(String message, ContentType contentType) {
-        super(message + ": " + contentType.getCanonicalId());
-        this.contentType = contentType;
-    }
-
-    public ContentTypeException(String message, Exception e) {
-        super(message, e);
+    public ContentTypeException(Throwable cause, DiagnosticCode code, Object... details) {
+        super(cause, code, details);
         this.contentType = null;
     }
 
