@@ -6,11 +6,21 @@ import java.net.URI;
 import io.github.qishr.cascara.common.diagnostic.LocalizableException;
 import io.github.qishr.cascara.common.diagnostic.code.FileDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
+import io.github.qishr.cascara.common.io.UriScheme;
 
-public class ResResourceProvider implements ResourceProvider {
+public class ResResourceProvider extends AbstractResourceProvider  {
     private Class<?> clazz;
 
     public ResResourceProvider(Class<?> clazz) {
+        super(UriScheme.RES);
+        this.clazz = clazz;
+    }
+
+    public ResResourceProvider() {
+        super(UriScheme.RES);
+    }
+
+    public void setClass(Class<?> clazz) {
         this.clazz = clazz;
     }
 

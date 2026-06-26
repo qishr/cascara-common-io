@@ -18,8 +18,13 @@ import io.github.qishr.cascara.common.diagnostic.code.DnsDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.InetDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
+import io.github.qishr.cascara.common.io.UriScheme;
 
-public class HttpResourceProvider implements ResourceProvider {
+public class HttpResourceProvider extends AbstractResourceProvider {
+
+    public HttpResourceProvider() {
+        super(UriScheme.HTTP);
+    }
 
     @Override
     public ResourceStream getResourceAsStream(URI uri) throws LocalizableException {

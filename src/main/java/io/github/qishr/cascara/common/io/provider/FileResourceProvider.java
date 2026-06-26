@@ -11,8 +11,13 @@ import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.code.FileDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
+import io.github.qishr.cascara.common.io.UriScheme;
 
-public class FileResourceProvider implements ResourceProvider {
+public class FileResourceProvider extends AbstractResourceProvider {
+
+    public FileResourceProvider() {
+        super(UriScheme.FILE);
+    }
 
     @Override
     public ResourceStream getResourceAsStream(URI uri) throws LocalizableException {
