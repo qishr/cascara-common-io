@@ -2,12 +2,14 @@ package io.github.qishr.cascara.common.io;
 
 import java.io.InputStream;
 
+import io.github.qishr.cascara.common.util.ContentType;
+
 public final class ResourceStream {
     public final InputStream stream;
-    public final String mimeType; // null for non-HTTP
+    public final ContentType contentType; // null for non-HTTP
 
-    public ResourceStream(InputStream stream, String mimeType) {
+    public ResourceStream(InputStream stream, ContentType contentType) {
         this.stream = stream;
-        this.mimeType = mimeType;
+        this.contentType = contentType;
     }
 }

@@ -7,10 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.content.ResourceContent;
-import io.github.qishr.cascara.common.content.type.ContentTypeStore;
-import io.github.qishr.cascara.common.diagnostic.LocalizableException;
+import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.io.provider.CascaraResourceProvider;
 import io.github.qishr.cascara.common.io.provider.FileResourceProvider;
@@ -34,37 +32,47 @@ public class IOUtils {
         providers.put(uriScheme, provider);
     }
 
-    public static InputStream getContentAsStream(URI uri) throws LocalizableException {
+    public static InputStream getContentAsStream(URI uri) throws LocalizableIOException {
         return getResourceAsStream(uri).stream;
     }
 
-    public static ResourceContent getResource(URI uri) throws LocalizableException {
+    public static ResourceContent getResource(URI uri) throws LocalizableIOException {
         ResourceStream res = getResourceAsStream(uri);
         String content;
 		try {
 			content = new String(res.stream.readAllBytes(), StandardCharsets.UTF_8);
 		} catch (IOException e) {
             // TODO: i18n
-            throw new LocalizableException(e, GenericDiagnosticCode.IO_ERROR, "Failed to read resource: " + e.getMessage());
+            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, "Failed to read resource: " + e.getMessage());
 		}
-        ContentType ct = ContentTypeStore.instance().resolve(res.mimeType);
-        if (ct == null && res.mimeType != null) {
-            ct = new ContentType().withType(res.mimeType);
-        }
-        return new ResourceContent(content, ct);
+        return new ResourceContent(content, res.contentType);
     }
 
-    public static ResourceStream getResourceAsStream(URI uri) throws LocalizableException {
+    public static ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
         UriScheme scheme = UriScheme.of(uri);
         if (scheme == null || scheme == UriScheme.UNKNOWN) {
-            throw new LocalizableException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
+            throw new LocalizableIOException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
         }
-
         ResourceProvider provider = providers.get(scheme);
         if (provider == null) {
-            throw new LocalizableException(GenericDiagnosticCode.NO_RESOURCE_PROVIDER, uri);
+            throw new LocalizableIOException(GenericDiagnosticCode.NO_RESOURCE_PROVIDER, uri);
         }
-
         return provider.getResourceAsStream(uri);
+    }
+
+    //
+    // Convenience methods
+    //
+
+    public static InputStream getContentAsStream(String uri) throws LocalizableIOException {
+        return getContentAsStream(URI.create(uri));
+    }
+
+    public static ResourceContent getResource(String uri) throws LocalizableIOException {
+        return getResource(URI.create(uri));
+    }
+
+    public static ResourceStream getResourceAsStream(String uri) throws LocalizableIOException {
+        return getResourceAsStream(URI.create(uri));
     }
 }
