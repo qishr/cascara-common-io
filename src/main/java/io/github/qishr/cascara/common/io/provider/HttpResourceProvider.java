@@ -12,13 +12,14 @@ import java.net.http.HttpTimeoutException;
 
 import javax.net.ssl.SSLHandshakeException;
 
-import io.github.qishr.cascara.common.diagnostic.LocalizableException;
+import io.github.qishr.cascara.common.content.type.ContentTypeStore;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.code.DnsDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.InetDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
 import io.github.qishr.cascara.common.io.UriScheme;
+import io.github.qishr.cascara.common.util.ContentType;
 
 public class HttpResourceProvider extends AbstractResourceProvider {
 
@@ -27,7 +28,7 @@ public class HttpResourceProvider extends AbstractResourceProvider {
     }
 
     @Override
-    public ResourceStream getResourceAsStream(URI uri) throws LocalizableException {
+    public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
         try {
             HttpClient client = HttpClient.newBuilder()
                     .followRedirects(HttpClient.Redirect.NORMAL)
@@ -49,21 +50,25 @@ public class HttpResourceProvider extends AbstractResourceProvider {
                     .firstValue("Content-Type")
                     .orElse(null);
 
-            return new ResourceStream(response.body(), mime);
+            ContentType contentType = ContentTypeStore.instance().resolve(mime);
+            if (contentType == null) {
+                contentType = new ContentType().withType(mime);
+            }
+            return new ResourceStream(response.body(), contentType);
 
         } catch (UnknownHostException e) {
-            throw new LocalizableException(DnsDiagnosticCode.UNKNOWN_HOST, uri.getHost());
+            throw new LocalizableIOException(DnsDiagnosticCode.UNKNOWN_HOST, uri.getHost());
         } catch (ConnectException e) {
-            throw new LocalizableException(InetDiagnosticCode.CONNECTION_REFUSED, uri.getHost());
+            throw new LocalizableIOException(InetDiagnosticCode.CONNECTION_REFUSED, uri.getHost());
         } catch (HttpTimeoutException e) {
-            throw new LocalizableException(InetDiagnosticCode.CONNECTION_TIMEOUT, uri.getHost());
+            throw new LocalizableIOException(InetDiagnosticCode.CONNECTION_TIMEOUT, uri.getHost());
         } catch (SSLHandshakeException e) {
-            throw new LocalizableException(InetDiagnosticCode.TLS_HANDSHAKE_FAILED, uri.getHost());
+            throw new LocalizableIOException(InetDiagnosticCode.TLS_HANDSHAKE_FAILED, uri.getHost());
         } catch (IOException e) {
             throw new LocalizableIOException(GenericDiagnosticCode.IO_ERROR, e.getMessage(), e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new LocalizableException(GenericDiagnosticCode.INTERRUPT_ERROR, e.getMessage(), e);
+            throw new LocalizableIOException(GenericDiagnosticCode.INTERRUPT_ERROR, e.getMessage(), e);
         }
     }
 }

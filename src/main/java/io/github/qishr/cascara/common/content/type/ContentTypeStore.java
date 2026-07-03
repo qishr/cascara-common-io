@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
+import io.github.qishr.cascara.common.service.ServiceProviderLayer;
 import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.data.Table;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
@@ -91,7 +93,22 @@ public class ContentTypeStore implements ContentTypeResolver {
     }
 
     public ContentType resolve(String type) {
-        for (ContentType contentType : contentTypeRegistry.getRecords()) {
+
+        ContentType contentType = resolveUsing(contentTypeRegistry.getRecords(), type);
+        if (contentType != null) {
+            return contentType;
+        }
+
+        // Experimental:
+        // Check with ServiceProviderLayer for content types registered by services
+        ServiceProviderLayer layer = ServiceProviderLayer.getRootLayer();
+        contentType = resolveUsing(layer.getContentTypes(), type);
+
+        return contentType;
+    }
+
+    private ContentType resolveUsing(Collection<ContentType> contentTypes, String type) {
+        for (ContentType contentType : contentTypes) {
             if (contentType.getCanonicalId().equals(type)
                 || contentType.getName().equalsIgnoreCase(type)
                 || contentType.getMimeTypes().contains(type)
