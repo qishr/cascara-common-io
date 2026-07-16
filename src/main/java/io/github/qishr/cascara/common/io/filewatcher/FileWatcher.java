@@ -1,8 +1,44 @@
+// # License & Terms
+//
+// This file is part of **Cascara**.
+//
+// **Cascara** is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+//
+// ---
+//
+// ## Special Runtime Exception
+//
+// As a special exception, the copyright holders of this library give you
+// permission to link this library with independent modules to produce an
+// executable, regardless of the license terms of these independent modules,
+// and to copy and distribute the resulting executable under terms of your
+// choice, provided that you also meet, for each linked independent module,
+// the terms and conditions of the license of that module.
+//
+// An independent module is a module which is not derived from or based on
+// this library. If you modify this library, you may extend this exception
+// to your version of the library, but you are not obligated to do so. If
+// you do not wish to do so, delete this exception statement from your
+// version.
+
+
 package io.github.qishr.cascara.common.io.filewatcher;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.concurrent.*;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,20 +48,23 @@ public class FileWatcher {
 
     private record FileWatchSpec(Path targetFileName, Runnable callback) {}
 
+    private static Set<FileWatcher> allWatchers = new HashSet<>();
+
     private final WatchService watcher;
-    // Maps a WatchKey (from a registered path) to the user's Runnable callback
+
+    /// Maps a WatchKey (from a registered path) to the user's Runnable callback
     private final Map<WatchKey, Set<Runnable>> keysToCallbacks = new ConcurrentHashMap<>();
     private final Map<WatchKey, Set<FileWatchSpec>> keysToSpecs = new ConcurrentHashMap<>();
     private final Map<WatchKey, Set<FileChangeHandler>> keysToHandlers = new ConcurrentHashMap<>();
 
-    // Executor to run the WatchService polling loop in the background
+    /// Executor to run the WatchService polling loop in the background
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    // Flag to control the watcher thread's state
+    /// Flag to control the watcher thread's state
     private final AtomicBoolean running = new AtomicBoolean(true);
     private final AtomicBoolean paused = new AtomicBoolean(false);
 
-    // WatchEvent Kinds used for file monitoring
+    /// WatchEvent Kinds used for file monitoring
     private static final WatchEvent.Kind<?>[] WATCH_KINDS = new WatchEvent.Kind<?>[] {
         StandardWatchEventKinds.ENTRY_CREATE,
         StandardWatchEventKinds.ENTRY_DELETE,
@@ -35,11 +74,10 @@ public class FileWatcher {
     public FileWatcher() throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         executor.submit(this::watchLoop);
+        allWatchers.add(this);
     }
 
-    // --- Public API Methods ---
-
-    // Simple delegate, as true file-specific watching is complicated.
+    /// Simple delegate, as true file-specific watching is complicated.
     public void watchFile(Path path, Runnable onEvent) throws IOException {
         Path directory = path.getParent();
         if (directory == null) {
@@ -110,88 +148,12 @@ public class FileWatcher {
         executor.shutdownNow();
     }
 
-    //
-    // Core Watch Loop
-    //
-
-    // private void watchLoop() {
-    //     while (running.get()) {
-    //         if (paused.get()) {
-    //             try {
-    //                 Thread.sleep(100);
-    //             } catch (InterruptedException e) {
-    //                 Thread.currentThread().interrupt();
-    //             }
-    //             continue;
-    //         }
-
-    //         WatchKey key;
-    //         try {
-    //             key = watcher.take();
-    //         } catch (InterruptedException | ClosedWatchServiceException e) {
-    //             return;
-    //         }
-
-    //         Path dirPath = (Path) key.watchable(); // The directory being watched
-
-    //         for (WatchEvent<?> event : key.pollEvents()) {
-    //             // if (event.kind() == StandardWatchEventKinds.OVERFLOW) continue;
-
-    //             // Path fileName = (Path) event.context();
-    //             // Path fullPath = dirPath.resolve(fileName);
-    //             // FileChangeType type = mapKind(event.kind());
-
-    //             // // 1. Check for specific file specs (your existing logic)
-    //             // Set<FileWatchSpec> specs = keysToSpecs.get(key);
-    //             // if (specs != null) {
-    //             //     specs.stream()
-    //             //          .filter(s -> s.targetFileName().equals(fileName))
-    //             //          .forEach(s -> s.callback().run());
-    //             // }
-
-    //             // // 2. Check for granular directory handlers (the new logic)
-    //             // FileChangeHandler handler = keysToHandlers.get(key);
-    //             // if (handler != null) {
-    //             //     handler.handle(type, fullPath);
-    //             // }
-
-    //             // // 3. Keep existing Runnable callbacks for backward compatibility
-    //             // Runnable simpleCallback = keysToCallbacks.get(key);
-    //             // if (simpleCallback != null) simpleCallback.run();
-    //             WatchEvent.Kind<?> kind = event.kind();
-    //             if (kind == StandardWatchEventKinds.OVERFLOW) continue;
-
-    //             Path fileName = (Path) event.context();
-    //             Path fullPath = dirPath.resolve(fileName);
-
-    //             // 1. Notify Granular Handlers (ModuleService, etc.)
-    //             var granularHandler = keysToHandlers.get(key);
-    //             if (granularHandler != null) {
-    //                 granularHandler.handle(mapKind(kind), fullPath);
-    //             }
-
-    //             // 2. Notify Legacy/Simple Callbacks
-    //             Runnable simpleCallback = keysToCallbacks.get(key);
-    //             if (simpleCallback != null) {
-    //                 simpleCallback.run();
-    //             }
-
-    //             // 3. Notify Specific File Specs (The "targetFileName" check)
-    //             Set<FileWatchSpec> specs = keysToSpecs.get(key);
-    //             if (specs != null) {
-    //                 specs.stream()
-    //                      .filter(spec -> spec.targetFileName().equals(fileName))
-    //                      .forEach(spec -> spec.callback().run());
-    //             }
-    //         }
-
-    //         if (!key.reset()) {
-    //             keysToSpecs.remove(key);
-    //             keysToHandlers.remove(key);
-    //             keysToCallbacks.remove(key);
-    //         }
-    //     }
-    // }
+    /// Clears all file watchers globally
+    public static void clearAll() {
+        for (FileWatcher watcher : allWatchers) {
+            watcher.clear();
+        }
+    }
 
     private void watchLoop() {
         while (running.get()) {
