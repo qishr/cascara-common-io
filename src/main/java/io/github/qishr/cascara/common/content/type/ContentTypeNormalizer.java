@@ -250,7 +250,7 @@ public final class ContentTypeNormalizer {
         try (StringWriter writer = new StringWriter()){
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
-        } catch (IOException | LocalizableIOException e) {
+        } catch (IOException e) {
             reporter.error(GenericDiagnosticCode.IO_ERROR, "Failed to write debug output: " + e.getMessage());
         }
     }

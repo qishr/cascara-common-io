@@ -5,10 +5,10 @@ import java.net.URI;
 
 import io.github.qishr.cascara.common.content.type.ContentTypeStore;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
-import io.github.qishr.cascara.common.diagnostic.code.FileDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
 import io.github.qishr.cascara.common.io.UriScheme;
 import io.github.qishr.cascara.common.util.ContentType;
+import io.github.qishr.cascara.common.util.JreUtil;
 
 public class ResResourceProvider extends AbstractResourceProvider  {
     private Class<?> clazz;
@@ -29,17 +29,7 @@ public class ResResourceProvider extends AbstractResourceProvider  {
     @Override
     public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
         String path = uri.getSchemeSpecificPart().replace("//", "");
-
-        InputStream is = clazz.getResourceAsStream(path);
-        if (is == null && path.startsWith("/")) {
-            path = path.substring(1);
-            is = clazz.getResourceAsStream(path);
-        }
-
-        // TODO: If clazz is in a JPMS module, check if the module opens the package.
-        // If it doesn't, put that detail in the exception.
-
-        if (is == null) throw new LocalizableIOException(FileDiagnosticCode.FILE_NOT_FOUND, path);
+        InputStream is = JreUtil.getResourceAsStream(clazz, path);
 
         // Infer content type from filename
         ContentType contentType = ContentTypeStore.instance().resolve(fileNameExtension(path));
