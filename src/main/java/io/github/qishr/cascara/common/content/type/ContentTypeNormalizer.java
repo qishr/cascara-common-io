@@ -47,11 +47,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
-import io.github.qishr.cascara.common.data.Table;
+import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.util.ContentType;
 
 public final class ContentTypeNormalizer {
@@ -276,7 +275,7 @@ public final class ContentTypeNormalizer {
     }
 
     private void debugOutputTypes(List<MergedContentType> types) {
-        Table table = new Table();
+        TextualTable table = new TextualTable();
         table.addColumn("Canonical ID");
         table.addColumn("Name");
         for (MergedContentType type : types) {

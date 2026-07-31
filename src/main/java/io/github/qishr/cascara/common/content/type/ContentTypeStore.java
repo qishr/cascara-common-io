@@ -47,13 +47,12 @@ import java.util.Set;
 
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.common.util.Properties;
-import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.service.ServiceProviderLayer;
 import io.github.qishr.cascara.common.util.ContentType;
-import io.github.qishr.cascara.common.data.Table;
+import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
 
 public class ContentTypeStore implements ContentTypeResolver {
@@ -253,7 +252,7 @@ public class ContentTypeStore implements ContentTypeResolver {
     //
 
     public void debugOutputTypes(List<ContentType> types) {
-        Table table = new Table();
+        TextualTable table = new TextualTable();
         table.addColumn("Canonical ID");
         table.addColumn("Name");
         for (ContentType type : types) {
