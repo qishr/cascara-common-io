@@ -53,7 +53,7 @@ import io.github.qishr.cascara.common.diagnostic.code.DnsDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.InetDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
-import io.github.qishr.cascara.common.io.UriScheme;
+import io.github.qishr.cascara.common.util.UriScheme;
 import io.github.qishr.cascara.common.util.ContentType;
 
 public class HttpResourceProvider extends AbstractResourceProvider {

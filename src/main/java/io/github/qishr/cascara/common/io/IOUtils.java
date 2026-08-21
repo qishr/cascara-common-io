@@ -49,6 +49,7 @@ import io.github.qishr.cascara.common.io.provider.CascaraResourceProvider;
 import io.github.qishr.cascara.common.io.provider.FileResourceProvider;
 import io.github.qishr.cascara.common.io.provider.HttpResourceProvider;
 import io.github.qishr.cascara.common.io.provider.ResourceProvider;
+import io.github.qishr.cascara.common.util.UriScheme;
 
 public class IOUtils {
 

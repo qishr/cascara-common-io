@@ -86,7 +86,7 @@ public class ContentTypeStore implements ContentTypeResolver {
             } catch (IOException e) {
                 throw new ContentTypeException(e, ContentTypeDiagnosticCode.REGISTRY_READ_ERROR);
             }
-            contentTypeRegistry = serializer.fromText(yamlContent, ContentTypeRegistry.class);
+            contentTypeRegistry = serializer.fromString(yamlContent, ContentTypeRegistry.class);
         } else {
             contentTypeRegistry = new ContentTypeRegistry();
         }
@@ -167,7 +167,7 @@ public class ContentTypeStore implements ContentTypeResolver {
 
         debugOutputTypes(contentTypeRegistry.getRecords());
 
-        String yamlContent = serializer.toText(contentTypeRegistry);
+        String yamlContent = serializer.toString(contentTypeRegistry);
         try {
             Files.writeString(registryPath, yamlContent);
         } catch (IOException e) {

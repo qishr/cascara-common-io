@@ -45,7 +45,7 @@ import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.code.FileDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
-import io.github.qishr.cascara.common.io.UriScheme;
+import io.github.qishr.cascara.common.util.UriScheme;
 
 public class FileResourceProvider extends AbstractResourceProvider {
 

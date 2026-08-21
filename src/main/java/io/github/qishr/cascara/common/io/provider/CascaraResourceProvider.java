@@ -39,7 +39,7 @@ import java.net.URI;
 
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.io.ResourceStream;
-import io.github.qishr.cascara.common.io.UriScheme;
+import io.github.qishr.cascara.common.util.UriScheme;
 
 public class CascaraResourceProvider extends AbstractResourceProvider {
 

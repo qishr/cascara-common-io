@@ -35,7 +35,7 @@
 
 package io.github.qishr.cascara.common.io.provider;
 
-import io.github.qishr.cascara.common.io.UriScheme;
+import io.github.qishr.cascara.common.util.UriScheme;
 import io.github.qishr.cascara.common.util.Properties;
 
 public abstract class AbstractResourceProvider implements ResourceProvider {
