@@ -44,7 +44,8 @@ module cascara.common.io {
     exports io.github.qishr.cascara.common.io.filewatcher;
     exports io.github.qishr.cascara.common.io.provider;
 
-    opens io.github.qishr.cascara.common.content;
+    opens io.github.qishr.cascara.common.content to cascara.common;
+    opens io.github.qishr.cascara.common.content.type to cascara.common;
 
     uses io.github.qishr.cascara.common.service.ServiceProvider;
 

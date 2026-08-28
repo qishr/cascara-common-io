@@ -39,15 +39,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.qishr.cascara.common.annotation.Nullable;
 import io.github.qishr.cascara.common.content.ResourceContent;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.io.provider.CascaraResourceProvider;
 import io.github.qishr.cascara.common.io.provider.FileResourceProvider;
 import io.github.qishr.cascara.common.io.provider.HttpResourceProvider;
+import io.github.qishr.cascara.common.io.provider.ResResourceProvider;
 import io.github.qishr.cascara.common.io.provider.ResourceProvider;
 import io.github.qishr.cascara.common.util.UriScheme;
 
@@ -85,15 +89,33 @@ public class IOUtils {
     }
 
     public static ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+        uri = normalizeUri(uri);
         UriScheme scheme = UriScheme.of(uri);
-        if (scheme == null || scheme == UriScheme.UNKNOWN) {
-            throw new LocalizableIOException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
-        }
-        ResourceProvider provider = providers.get(scheme);
+        // if (scheme == UriScheme.UNKNOWN) {
+        //     throw new LocalizableIOException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
+        // }
+        // if (scheme == UriScheme.NONE) {
+        //     scheme = UriScheme.FILE;
+        //     uri = URI.create("file://" + uri);
+        // }
+        ResourceProvider provider = getResourceProvider(scheme);
         if (provider == null) {
             throw new LocalizableIOException(GenericDiagnosticCode.NO_RESOURCE_PROVIDER, uri);
         }
         return provider.getResourceAsStream(uri);
+    }
+
+    public static URI normalizeUri(URI uri) throws LocalizableIOException {
+        UriScheme scheme = UriScheme.of(uri);
+        if (scheme == UriScheme.UNKNOWN) {
+            throw new LocalizableIOException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
+        }
+        if (scheme == UriScheme.NONE) {
+            scheme = UriScheme.FILE;
+            Path path = Paths.get(uri.toString()).toAbsolutePath();
+            uri = path.toUri();
+        }
+        return uri;
     }
 
     //
@@ -110,5 +132,41 @@ public class IOUtils {
 
     public static ResourceStream getResourceAsStream(String uri) throws LocalizableIOException {
         return getResourceAsStream(URI.create(uri));
+    }
+
+    //
+    // Helpers
+    //
+
+    @Nullable
+    private static ResourceProvider getResourceProvider(UriScheme scheme) throws LocalizableIOException {
+        ResourceProvider provider = providers.get(scheme);
+        if (provider == null && scheme == UriScheme.RES) {
+            Class<?> callingClass = getCallingClass();
+            if (callingClass == null) {
+                throw new LocalizableIOException(GenericDiagnosticCode.ERROR, "No " + scheme + " resource provider registered and unable to determine calling class");
+            } else {
+                provider = new ResResourceProvider(callingClass);
+                providers.put(scheme, provider);
+            }
+        }
+        return provider;
+    }
+
+    @Nullable
+    private static Class<?> getCallingClass() {
+        String pkgPrefix = IOUtils.class.getPackageName() + ".";
+        StackTraceElement[] callStack = Thread.currentThread().getStackTrace();
+        for (StackTraceElement frame : callStack) {
+            String className = frame.getClassName();
+            if (!className.startsWith("java.") && !className.startsWith(pkgPrefix)) {
+                try {
+                    return Class.forName(className);
+                } catch (ClassNotFoundException e) {
+                    break;
+                }
+            }
+        }
+        return null;
     }
 }
