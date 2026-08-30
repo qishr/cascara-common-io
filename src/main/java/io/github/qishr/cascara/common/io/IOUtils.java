@@ -53,6 +53,8 @@ import io.github.qishr.cascara.common.io.provider.FileResourceProvider;
 import io.github.qishr.cascara.common.io.provider.HttpResourceProvider;
 import io.github.qishr.cascara.common.io.provider.ResResourceProvider;
 import io.github.qishr.cascara.common.io.provider.ResourceProvider;
+import io.github.qishr.cascara.common.util.Pair;
+import io.github.qishr.cascara.common.util.ReflectionUtils;
 import io.github.qishr.cascara.common.util.UriScheme;
 
 public class IOUtils {
@@ -91,18 +93,15 @@ public class IOUtils {
     public static ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
         uri = normalizeUri(uri);
         UriScheme scheme = UriScheme.of(uri);
-        // if (scheme == UriScheme.UNKNOWN) {
-        //     throw new LocalizableIOException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
-        // }
-        // if (scheme == UriScheme.NONE) {
-        //     scheme = UriScheme.FILE;
-        //     uri = URI.create("file://" + uri);
-        // }
         ResourceProvider provider = getResourceProvider(scheme);
         if (provider == null) {
             throw new LocalizableIOException(GenericDiagnosticCode.NO_RESOURCE_PROVIDER, uri);
         }
         return provider.getResourceAsStream(uri);
+    }
+
+    public static URI normalizeUri(String string) throws LocalizableIOException {
+        return normalizeUri(URI.create(string));
     }
 
     public static URI normalizeUri(URI uri) throws LocalizableIOException {
@@ -111,7 +110,6 @@ public class IOUtils {
             throw new LocalizableIOException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
         }
         if (scheme == UriScheme.NONE) {
-            scheme = UriScheme.FILE;
             Path path = Paths.get(uri.toString()).toAbsolutePath();
             uri = path.toUri();
         }
@@ -155,17 +153,9 @@ public class IOUtils {
 
     @Nullable
     private static Class<?> getCallingClass() {
-        String pkgPrefix = IOUtils.class.getPackageName() + ".";
-        StackTraceElement[] callStack = Thread.currentThread().getStackTrace();
-        for (StackTraceElement frame : callStack) {
-            String className = frame.getClassName();
-            if (!className.startsWith("java.") && !className.startsWith(pkgPrefix)) {
-                try {
-                    return Class.forName(className);
-                } catch (ClassNotFoundException e) {
-                    break;
-                }
-            }
+        Pair<Class<?>,String> caller = ReflectionUtils.getCaller(true);
+        if (caller != null) {
+            return caller.getL();
         }
         return null;
     }
