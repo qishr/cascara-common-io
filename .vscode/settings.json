@@ -1,5 +1,5 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.configuration.updateBuildConfiguration": "disabled",
     "java.test.config": {
         "modulePaths": ["${workspaceFolder}/build/modulepath"],
         "module": "cascara.common.io",

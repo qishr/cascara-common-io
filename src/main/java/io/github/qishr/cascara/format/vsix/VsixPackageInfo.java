@@ -33,26 +33,49 @@
 // version.
 
 
-package io.github.qishr.cascara.common.content.type;
+package io.github.qishr.cascara.format.vsix;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.qishr.cascara.common.annotation.DataField;
-import io.github.qishr.cascara.common.util.ContentType;
+import io.github.qishr.cascara.common.util.Properties;
+import io.github.qishr.cascara.format.vsix.VsixPackage;
+import io.github.qishr.cascara.format.vsix.VsixThemeInfo;
 
-public class ContentTypeRegistry {
+public class VsixPackageInfo {
+    private String name;
+    private String displayName;
+    private Path path;
 
-    @DataField
-    public List<ContentType> records = new ArrayList<>();
+    private Properties properties = new Properties();
+    private List<String> categories = new ArrayList<>();
+    private List<VsixThemeInfo> themes = new ArrayList<>();
 
-    public ContentTypeRegistry() {}
-
-    public List<ContentType> getRecords() {
-        return records;
+    public VsixPackageInfo(Path path, String name, String displayName) {
+        this.path = path;
+        this.name = name;
+        this.displayName = displayName;
     }
 
-    public void setRecords(List<ContentType> records) {
-        this.records = records;
+    public Properties getProperties() {
+        return properties;
     }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public List<VsixThemeInfo> getThemes() {
+        return themes;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public Path getPath() { return path; }
 }

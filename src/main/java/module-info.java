@@ -33,25 +33,13 @@
 // version.
 
 
-module cascara.common.io {
-    requires java.net.http;
+module cascara.format.vsix {
     requires transitive cascara.common;
-    requires cascara.lang.yaml;
+    requires transitive cascara.common.io;
+    requires cascara.lang.json;
+    requires cascara.lang.xml;
+    requires cascara.schema;
 
-    exports io.github.qishr.cascara.common.content;
-    exports io.github.qishr.cascara.common.content.type;
-    exports io.github.qishr.cascara.common.io;
-    exports io.github.qishr.cascara.common.io.filewatcher;
-    exports io.github.qishr.cascara.common.io.provider;
+    exports io.github.qishr.cascara.format.vsix;
 
-    opens io.github.qishr.cascara.common.content to cascara.common;
-    opens io.github.qishr.cascara.common.content.type to cascara.common;
-
-    uses io.github.qishr.cascara.common.service.ServiceProvider;
-
-    provides io.github.qishr.cascara.common.io.provider.ResourceProvider
-        with io.github.qishr.cascara.common.io.provider.CascaraResourceProvider,
-             io.github.qishr.cascara.common.io.provider.FileResourceProvider,
-             io.github.qishr.cascara.common.io.provider.HttpResourceProvider,
-             io.github.qishr.cascara.common.io.provider.ResResourceProvider;
 }

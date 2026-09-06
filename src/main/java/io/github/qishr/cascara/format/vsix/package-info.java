@@ -33,4 +33,4 @@
 // version.
 
 
-package io.github.qishr.cascara.common.io;
+package io.github.qishr.cascara.format.vsix;

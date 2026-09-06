@@ -5,6 +5,11 @@ plugins {
 }
 
 
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+}
+
+
 repositories {
 	mavenLocal()
 	mavenCentral()
@@ -20,7 +25,11 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testRuntimeOnly('org.junit.platform:junit-platform-launcher')
 
-    implementation("io.github.qishr:cascara-common")
-    implementation("io.github.qishr:cascara-lang-yaml")
+    // Cascara modules
+    implementation "io.github.qishr:cascara-common"
+    implementation "io.github.qishr:cascara-common-io"
+    implementation "io.github.qishr:cascara-lang-json"
+    implementation "io.github.qishr:cascara-lang-xml"
+    implementation "io.github.qishr:cascara-schema"
 }
 
