@@ -35,35 +35,29 @@
 
 package io.github.qishr.cascara.format.vsix;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.util.*;
 
-import io.github.qishr.cascara.common.util.ArchiveFile;
-import io.github.qishr.cascara.common.io.IOUtils;
-import io.github.qishr.cascara.common.util.Properties;
-import io.github.qishr.cascara.common.content.ResourceContent;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.LocalizableRuntimeException;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.lang.ast.ScalarAstNode;
+import io.github.qishr.cascara.common.util.ArchiveFile;
+import io.github.qishr.cascara.common.util.Properties;
+import io.github.qishr.cascara.lang.json.ast.JsonArray;
+import io.github.qishr.cascara.lang.json.ast.JsonNode;
+import io.github.qishr.cascara.lang.json.ast.JsonObject;
+import io.github.qishr.cascara.lang.json.ast.JsonProperty;
 import io.github.qishr.cascara.lang.json.processor.JsonAstParser;
 import io.github.qishr.cascara.lang.json.util.JsonOptions;
-import io.github.qishr.cascara.lang.json.ast.JsonProperty;
-import io.github.qishr.cascara.lang.json.ast.JsonObject;
-import io.github.qishr.cascara.lang.json.ast.JsonNode;
-import io.github.qishr.cascara.lang.json.ast.JsonArray;
+import io.github.qishr.cascara.lang.xml.ast.XmlNode;
 import io.github.qishr.cascara.lang.xml.processor.XmlAstParser;
 import io.github.qishr.cascara.schema.diagnostic.SchemaDiagnosticCode;
 import io.github.qishr.cascara.schema.diagnostic.SchemaException;
-import io.github.qishr.cascara.lang.xml.ast.XmlNode;
 
 public class VsixPackage extends ArchiveFile {
     private static final String EXTENSION_DIR = "extension/";
-    private static final String IMAGES_DIR = EXTENSION_DIR +"images/";
-    private static final String THEMES_DIR = EXTENSION_DIR +"themes/";
+    private static final String IMAGES_DIR = EXTENSION_DIR + "images/";
+    private static final String THEMES_DIR = EXTENSION_DIR + "themes/";
 
     private static final String CHANGELOG_FILENAME = EXTENSION_DIR + "CHANGELOG.md";
     private static final String CONTENT_TYPES_FILENAME = EXTENSION_DIR + "[Content_Types].xml";
@@ -115,37 +109,6 @@ public class VsixPackage extends ArchiveFile {
     }
 
     //
-    // Packaging and archive methods
-    //
-
-    // TODO: Manifest, packagJson, etc should stay in memory until close or flush called.
-
-    // // High-level method accepting raw strings/bytes instead of JSON/XML models
-    // public void addManifest(String manifestXmlContent) throws LocalizableIOException {
-    //     addFile(manifestXmlContent, EXTENSION_DIR + MANIFEST_FILENAME);
-    // }
-
-    // public void addContentTypes(String contentTypesXmlContent) throws LocalizableIOException {
-    //     addFile(contentTypesXmlContent, EXTENSION_DIR + CONTENT_TYPES_FILENAME);
-    // }
-
-    // public void addPackageJson(String packageJsonContent) throws LocalizableIOException {
-    //     addFile(packageJsonContent, EXTENSION_DIR + PACKAGE_FILENAME);
-    // }
-
-    //
-    // Mandatory Files
-    //
-
-    // public void setManifest(Path path) throws LocalizableIOException {
-    //     addFile(path, EXTENSION_DIR + MANIFEST_FILENAME);
-    // }
-
-    // public void setPackageJson(Path path) throws LocalizableIOException {
-    //     addFile(path, EXTENSION_DIR + PACKAGE_FILENAME);
-    // }
-
-    //
     // Optional Files
     //
 
@@ -153,16 +116,12 @@ public class VsixPackage extends ArchiveFile {
         addFile(path, EXTENSION_DIR + CHANGELOG_FILENAME);
     }
 
-    public void setContentTypes(Path path) throws LocalizableIOException {
-        addFile(path, EXTENSION_DIR + CONTENT_TYPES_FILENAME);
+    public void setLicense(Path path) throws LocalizableIOException {
+        addFile(path, EXTENSION_DIR + LICENSE_FILENAME);
     }
 
     public void setReadme(Path path) throws LocalizableIOException {
         addFile(path, EXTENSION_DIR + README_FILENAME);
-    }
-
-    public void setLicense(Path path) throws LocalizableIOException {
-        addFile(path, EXTENSION_DIR + LICENSE_FILENAME);
     }
 
     //
@@ -171,6 +130,7 @@ public class VsixPackage extends ArchiveFile {
 
     public void addThemesFromDirectory(Path path) throws LocalizableIOException {
         addDirectory(path, EXTENSION_DIR + "themes");
+        // TOOD: extract metadata from theme JSON into Package JSON
     }
 
     public void addImagesFromDirectory(Path path) throws LocalizableIOException {
@@ -179,6 +139,7 @@ public class VsixPackage extends ArchiveFile {
 
     public void addThemeFile(Path path) throws LocalizableIOException {
         addFile(path, THEMES_DIR + path.getFileName());
+        // TOOD: extract metadata from theme JSON into Package JSON
     }
 
     //
@@ -367,10 +328,6 @@ public class VsixPackage extends ArchiveFile {
         }
     }
 
-    //
-    //
-    //
-
     private String resolveVariables(String value) {
         // TODO: Improve this
         if (value.startsWith("%")) {
@@ -384,5 +341,4 @@ public class VsixPackage extends ArchiveFile {
         }
         return value;
     }
-
 }
