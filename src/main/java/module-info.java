@@ -42,4 +42,5 @@ module cascara.format.vsix {
 
     exports io.github.qishr.cascara.format.vsix;
 
+    opens io.github.qishr.cascara.format.vsix to cascara.common, cascara.schema;
 }

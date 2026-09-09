@@ -40,23 +40,45 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VsixMetadata {
-    // TODO: This should extend ObservableObject
+import io.github.qishr.cascara.schema.annotation.SchemaDefinition;
+import io.github.qishr.cascara.schema.annotation.SchemaProperty;
+import io.github.qishr.cascara.schema.util.SchematicObject;
 
+@SchemaDefinition
+public class VsixMetadata { //extends SchematicObject {
+
+    @SchemaProperty
     private String name;
+
+    @SchemaProperty
     private String displayName;
+
+    @SchemaProperty
     private String version;
+
+    @SchemaProperty
     private String description;
+
+    @SchemaProperty
     private String publisher;
+
+    @SchemaProperty
     private String icon;
+
+    @SchemaProperty
     private Map<String,String> engines = new HashMap<>();
+
+    @SchemaProperty
     private RepositoryInfo repository;
 
-    // private Properties properties = new Properties();
+    @SchemaProperty
     private List<String> categories = new ArrayList<>();
+
+    @SchemaProperty
     private List<VsixThemeInfo> themes = new ArrayList<>();
 
     public VsixMetadata() {
+        super();
     }
 
     public void set(String k, String v) {
