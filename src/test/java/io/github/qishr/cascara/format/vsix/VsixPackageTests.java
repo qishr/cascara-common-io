@@ -54,13 +54,13 @@ class VsixPackageTests extends ArchiveTestBase {
         Files.createDirectories(sourceDir.resolve("images"));
 
         Files.writeString(
-            sourceDir.resolve(LICENSE_F),
+            sourceDir.resolve(LICENSE_FILE),
             "first file",
             StandardCharsets.UTF_8
         );
 
         Files.writeString(
-            sourceDir.resolve(README_F),
+            sourceDir.resolve(README_FILE),
             "first file",
             StandardCharsets.UTF_8
         );
@@ -74,8 +74,8 @@ class VsixPackageTests extends ArchiveTestBase {
         Path pkgPath = tempDir.resolve("package.vsix");
         VsixPackage pkg = VsixPackage.create(pkgPath);
         // pkg.addDirectory(sourceDir);
-        pkg.setLicense(sourceDir.resolve(LICENSE_F));
-        pkg.setReadme(sourceDir.resolve(README_F));
+        pkg.setLicense(sourceDir.resolve(LICENSE_FILE));
+        pkg.setReadme(sourceDir.resolve(README_FILE));
         pkg.close();
 
 

@@ -14,8 +14,8 @@ import org.junit.jupiter.api.io.TempDir;
 import io.github.qishr.cascara.common.util.ArchiveFile.EntryInfo;
 
 public abstract class ArchiveTestBase {
-    protected static final String LICENSE_F = "LICENSE";
-    protected static final String README_F = "README.md";
+    protected static final String LICENSE_FILE = "LICENSE";
+    protected static final String README_FILE = "README.md";
 
     protected static final String EXTENSION_DIR = "extension/";
     protected static final String IMAGES_DIR = EXTENSION_DIR + "images/";

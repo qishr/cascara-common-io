@@ -41,6 +41,9 @@ public class VsixThemeInfo extends Contribution {
     String label;
     String uiTheme;
     String path;
+    String name;
+    String type;
+    boolean semanticHighlighting;
 
     @DataIgnore
     private Properties properties = new Properties();
@@ -83,6 +86,33 @@ public class VsixThemeInfo extends Contribution {
     public VsixThemeInfo setPath(String s) {
         // properties.set("path", s);
         path = s;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public VsixThemeInfo setName(String s) {
+        name = s;
+        return this;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public VsixThemeInfo setType(String s) {
+        type = s;
+        return this;
+    }
+
+    public boolean getSemanticHighlighting() {
+        return semanticHighlighting;
+    }
+
+    public VsixThemeInfo setSemanticHighlighting(boolean b) {
+        semanticHighlighting = b;
         return this;
     }
 
