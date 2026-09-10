@@ -17,16 +17,16 @@ public abstract class ArchiveTestBase {
     protected static final String LICENSE_FILE = "LICENSE";
     protected static final String README_FILE = "README.md";
 
-    protected static final String EXTENSION_DIR = "extension/";
-    protected static final String IMAGES_DIR = EXTENSION_DIR + "images/";
-    protected static final String THEMES_DIR = EXTENSION_DIR + "themes/";
+    protected static final String DIR_EXTENSION = "extension/";
+    protected static final String DIR_IMAGES = DIR_EXTENSION + "images/";
+    protected static final String DIR_THEMES = DIR_EXTENSION + "themes/";
 
-    protected static final String CHANGELOG_ENTRY = EXTENSION_DIR + "CHANGELOG.md";
-    protected static final String CONTENT_TYPES_ENTRY = EXTENSION_DIR + "[Content_Types].xml";
-    protected static final String LICENSE_ENTRY = EXTENSION_DIR + "LICENSE.md";
-    protected static final String MANIFEST_XML_ENTRY = EXTENSION_DIR + "extension.vsixmanifest";
-    protected static final String PACKAGE_JSON_ENTRY = EXTENSION_DIR + "package.json";
-    protected static final String README_ENTRY = EXTENSION_DIR + "README.md";
+    protected static final String ENTRY_CHANGELOG = DIR_EXTENSION + "CHANGELOG.md";
+    protected static final String ENTRY_CONTENT_TYPES = DIR_EXTENSION + "[Content_Types].xml";
+    protected static final String ENTRY_LICENSE = DIR_EXTENSION + "LICENSE.md";
+    protected static final String ENTRY_MANIFEST_XML = DIR_EXTENSION + "extension.vsixmanifest";
+    protected static final String ENTRY_PACKAGE_JSON = DIR_EXTENSION + "package.json";
+    protected static final String ENTRY_README = DIR_EXTENSION + "README.md";
 
     @TempDir
     protected Path tempDir;

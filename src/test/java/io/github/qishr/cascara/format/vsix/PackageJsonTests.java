@@ -83,7 +83,7 @@ public class PackageJsonTests extends ArchiveTestBase {
               }
             """;
 
-        pkg.addFile(pkgJson, PACKAGE_JSON_ENTRY);
+        pkg.addFile(pkgJson, ENTRY_PACKAGE_JSON);
 
         assertEquals("Test Theme", pkg.getName());
         assertEquals("Display Name", pkg.getDisplayName());

@@ -39,19 +39,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import io.github.qishr.cascara.common.annotation.Nullable;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.LocalizableRuntimeException;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.StandardReporter;
+import io.github.qishr.cascara.common.diagnostic.UnimplementedMethodException;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.util.ArchiveFile;
@@ -82,13 +81,12 @@ public class VsixPackage extends ArchiveFile {
     private static final String CONTRIBUTES_THEMES = "themes";
 
     private boolean closed = false;
-    // private VsixMetadata metadata = new VsixMetadata();
+    private VsixIdentity identity = new VsixIdentity();
     private PackageJsonFile pkgJsonFile = new PackageJsonFile();
     private Set<String> optionalFiles = new HashSet<>();
-    // private Map<String,VsixThemeInfo> themes = new HashMap<>();
 
-    // Reporter reporter = new NoOpReporter();
-    Reporter reporter = new StandardReporter().setLevel(Level.DEBUG);
+    Reporter reporter = new NoOpReporter();
+    // Reporter reporter = new StandardReporter().setLevel(Level.DEBUG);
 
     @FunctionalInterface
     private interface SpecialFileHandler {
@@ -214,6 +212,16 @@ public class VsixPackage extends ArchiveFile {
     // Getters and Setters
     //
 
+    public VsixIdentity getIdentity() {
+        return identity;
+    }
+
+    public VsixPackage setIdentity(VsixIdentity id) {
+        identity = id;
+        return this;
+    }
+
+    @Nullable
     public String getName() {
         return pkgJsonFile.getName();
     }
@@ -223,6 +231,7 @@ public class VsixPackage extends ArchiveFile {
         return this;
     }
 
+    @Nullable
     public String getDisplayName() {
         return pkgJsonFile.getDisplayName();
     }
@@ -232,15 +241,18 @@ public class VsixPackage extends ArchiveFile {
         return this;
     }
 
+    @Nullable
     public String getVersion() {
         return pkgJsonFile.getVersion();
     }
 
     public VsixPackage setVersion(String s) {
+        identity.setVersion(s);
         pkgJsonFile.setVersion(s);
         return this;
     }
 
+    @Nullable
     public String getDescription() {
         return pkgJsonFile.getDescription();
     }
@@ -250,15 +262,18 @@ public class VsixPackage extends ArchiveFile {
         return this;
     }
 
+    @Nullable
     public String getPublisher() {
         return pkgJsonFile.getPublisher();
     }
 
     public VsixPackage setPublisher(String s) {
+        identity.setPublisher(s);
         pkgJsonFile.setPublisher(s);
         return this;
     }
 
+    @Nullable
     public String getIcon() {
         return pkgJsonFile.getIcon();
     }
@@ -296,12 +311,9 @@ public class VsixPackage extends ArchiveFile {
         return this;
     }
 
+    @Nullable
     public RepositoryInfo getRepository() {
         return pkgJsonFile.getRepository();
-        // if (repository == null) {
-        //     repository = new RepositoryInfo();
-        // }
-        // return repository;
     }
 
     public VsixPackage setRepository(RepositoryInfo o) {
@@ -389,16 +401,15 @@ public class VsixPackage extends ArchiveFile {
 		try {
 			jsonString = Files.readString(path);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-            return;
+            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
 		}
         extractUiThemeMetadata(jsonString, entryName);
     }
 
     private void addThemeContent(String content, String entryName)  throws LocalizableIOException {
-        // TODO: Add the actual file
-        extractUiThemeMetadata(content, entryName);
+        throw new UnimplementedMethodException();
+        // // TODO: Add the actual file
+        // extractUiThemeMetadata(content, entryName);
     }
 
     private void extractUiThemeMetadata(String jsonString, String entryName) {
@@ -406,7 +417,7 @@ public class VsixPackage extends ArchiveFile {
         JsonNode rootNode = jsonAstParser.parse(jsonString);
         if (rootNode instanceof JsonObject rootObject) {
             if (!pkgJsonFile.getCategories().contains(CATEGORIES_THEMES)) {
-                // TODO: Use a set insetad of a list for this
+                // TODO: Use a set instead of a list for this
                 pkgJsonFile.getCategories().add(CONTRIBUTES_THEMES);
             }
 
@@ -434,11 +445,10 @@ public class VsixPackage extends ArchiveFile {
             boolean semanticHighlighting = rootObject.getBoolean("semanticHighlighting");
 
             if (theme == null) {
-                // Create
+                // Create it
                 String relEntryName = "./" + entryName.substring(DIR_EXTENSION.length());
                 theme = new VsixThemeInfo();
                 theme.setPath(relEntryName);
-                // themes.put(name, theme);
                 themesGroup.add(theme);
             }
 
@@ -465,9 +475,6 @@ public class VsixPackage extends ArchiveFile {
         }
         return entryName;
     }
-
-    // private boolean pathMatches(String a, String b) {
-    // }
 
     private void addThemeNoThrow(Path sourcePath, Path entryPath, List<LocalizableIOException> exceptions) {
         try {
@@ -513,8 +520,8 @@ public class VsixPackage extends ArchiveFile {
     //
 
     private void addManifestXmlFile(Path sourcePath) throws LocalizableIOException {
+        throw new UnimplementedMethodException();
         // TODO
-        System.out.println("TODO");
     }
 
     private void setManifestXmlContent(String content) throws LocalizableIOException {
@@ -522,8 +529,6 @@ public class VsixPackage extends ArchiveFile {
     }
 
     private String getManifestXmlContent() {
-        // TODO
-        System.out.println("TODO");
         return _getManifestXmlContent();
     }
 
@@ -535,8 +540,15 @@ public class VsixPackage extends ArchiveFile {
             XmlNode metadataNode = xml.getChild("Metadata");
             XmlNode iconNode = metadataNode.getChild("Icon");
             if (iconNode != null) {
-                String iconPath = iconNode.getTextValue();
-                setIcon(iconPath);
+                setIcon(iconNode.getTextValue());
+            }
+
+            XmlNode identityNode = metadataNode.getChild("Identity");
+            if (identityNode != null) {
+                identity.setLanguage(identityNode.getAttribute("Language"));
+                identity.setId(identityNode.getAttribute("Id"));
+                identity.setVersion(identityNode.getAttribute("Version"));
+                identity.setPublisher(identityNode.getAttribute("Publisher"));
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -544,15 +556,33 @@ public class VsixPackage extends ArchiveFile {
         }
     }
 
-    // TODO: This needs to be dynamic
+    // TODO: This needs to be built by serializing,
+    // or at the very least by constructing XmlNodes
     private String _getManifestXmlContent() {
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
         sb.append("\t<PackageManifest Version=\"2.0.0\" xmlns=\"http://schemas.microsoft.com/developer/vsx-schema/2011\" xmlns:d=\"http://schemas.microsoft.com/developer/vsx-schema-design/2011\">\n");
         sb.append("\t\t<Metadata>\n");
-        sb.append("\t\t\t<Identity Language=\"en-US\" Id=\"cascara\" Version=\"1.0.0\" Publisher=\"qishr\" />\n");
-        sb.append("\t\t\t<DisplayName>Cascara Themes</DisplayName>\n");
-        sb.append("\t\t\t<Description xml:space=\"preserve\">Cascara Themes</Description>\n");
+
+        // TODO: i18n
+        sb.append("\t\t\t<Identity Language=\"");
+        sb.append(identity.getLanguage());
+        sb.append("\" Id=\"");
+        sb.append(identity.getId());
+        sb.append("\" Version=\"");
+        sb.append(identity.getVersion());
+        sb.append("\" Publisher=\"");
+        sb.append(identity.getPublisher());
+        sb.append("\" />\n");
+
+        sb.append("\t\t\t<DisplayName>");
+        sb.append(pkgJsonFile.getDisplayName());
+        sb.append("</DisplayName>\n");
+
+        sb.append("\t\t\t<Description xml:space=\"preserve\">");
+        sb.append(pkgJsonFile.getDescription());
+        sb.append("</Description>\n");
+
         sb.append("\t\t\t<Tags>theme,color-theme,__web_extension</Tags>\n");
         sb.append("\t\t\t<Categories>Themes</Categories>\n");
         sb.append("\t\t\t<GalleryFlags>Public</GalleryFlags>\n");
@@ -601,7 +631,7 @@ public class VsixPackage extends ArchiveFile {
     // Helpers
     //
 
-    private void enumerateOptionalFiles() {
+    private void enumerateOptionalFiles() throws LocalizableIOException {
         optionalFiles.clear();
         try {
 			List<EntryInfo> files = listFiles();
@@ -617,8 +647,8 @@ public class VsixPackage extends ArchiveFile {
                 }
             }
 		} catch (LocalizableIOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            // If we reach here, the archive hasn't been created yet
+            // throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
 		}
     }
 
