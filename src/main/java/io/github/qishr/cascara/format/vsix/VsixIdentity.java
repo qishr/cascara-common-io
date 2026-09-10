@@ -1,12 +1,18 @@
 package io.github.qishr.cascara.format.vsix;
 
+import java.util.UUID;
+
 public class VsixIdentity {
-    private String language = "en-US";
+    private static final String MODULE_NAME = "cascara.format.vsix";
+
+	private String language = "en-US";
     private String id;
     private String version;
     private String publisher;
 
-    public VsixIdentity() {}
+    public VsixIdentity() {
+		setId(null);
+	}
 
 	public String getLanguage() {
 		return language;
@@ -22,6 +28,9 @@ public class VsixIdentity {
 	}
 
 	public VsixIdentity setId(String id) {
+		if (id == null) {
+			id = MODULE_NAME + "." + UUID.randomUUID();
+		}
 		this.id = id;
         return this;
 	}
