@@ -41,8 +41,14 @@ public class VsixThemeInfo extends Contribution {
     String label;
     String uiTheme;
     String path;
+
+    @DataIgnore
     String name;
+
+    @DataIgnore
     String type;
+
+    @DataIgnore
     boolean semanticHighlighting;
 
     @DataIgnore

@@ -232,7 +232,7 @@ public class PackageJsonFile { //extends SchematicObject {
         return contributes;
     }
 
-    // public VsixPackageJsonFile addContribution(String type, Contribution c) {
+    // public PackageJsonFile addContribution(String type, Contribution c) {
     // }
 
     public PackageJsonFile addTheme(VsixThemeInfo c) {

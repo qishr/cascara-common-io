@@ -37,7 +37,7 @@ public class ThemeTests extends ArchiveTestBase {
     }
 
     @Test
-    void testAddThemeFileFile() throws IOException {
+    void testAddThemeFileFile() throws Exception {
         Path sourceDir = tempDir.resolve("source");
         Files.createDirectories(sourceDir.resolve("themes"));
 
@@ -62,6 +62,8 @@ public class ThemeTests extends ArchiveTestBase {
         assertFalse(pkg.getThemes().isEmpty());
 
         VsixThemeInfo theme = pkg.getThemes().getFirst();
+
+        pkg.close();
 
         assertEquals("Test Theme", theme.getName());
         assertEquals("dark", theme.getType());
