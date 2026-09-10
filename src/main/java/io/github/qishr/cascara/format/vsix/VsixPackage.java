@@ -43,16 +43,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import io.github.qishr.cascara.common.annotation.Nullable;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.LocalizableRuntimeException;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
-import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.diagnostic.UnimplementedMethodException;
-import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.util.ArchiveFile;
 import io.github.qishr.cascara.lang.json.ast.JsonNode;
@@ -135,7 +132,7 @@ public class VsixPackage extends ArchiveFile {
     // Static Methods
     //
 
-    public static VsixPackage load(Path vsixPath) throws LocalizableIOException {
+    public static VsixPackage open(Path vsixPath) throws LocalizableIOException {
         String packageInfo = new String(extractFile(vsixPath, ENTRY_PACKAGE_JSON));
         String vsixManifest = new String(extractFile(vsixPath, ENTRY_MANIFEST_XML));
         VsixPackage vsix = new VsixPackage(vsixPath, false);

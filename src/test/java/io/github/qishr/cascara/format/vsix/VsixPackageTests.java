@@ -81,7 +81,7 @@ class VsixPackageTests extends ArchiveTestBase {
 
         assertTrue(Files.exists(pkgPath));
 
-        VsixPackage actual = VsixPackage.load(pkgPath);
+        VsixPackage actual = VsixPackage.open(pkgPath);
         List<EntryInfo> files = actual.listFiles();
         assertContainsFile("extension/LICENSE.md", files, pkgPath);
         assertContainsFile("extension/README.md", files, pkgPath);
