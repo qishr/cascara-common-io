@@ -97,12 +97,12 @@ public class VsixPackage extends ArchiveFile {
     }
 
     @FunctionalInterface
-    private interface WildcardFileHandler {
+    private interface SpecialDirectoryFileHandler {
         void handle(Path sourcePath, String entryName) throws LocalizableIOException;
     }
 
     @FunctionalInterface
-    private interface WildcardContentHandler {
+    private interface SpecialDirectoryContentHandler {
         void handle(String content, String entryName) throws LocalizableIOException;
     }
 
@@ -116,11 +116,11 @@ public class VsixPackage extends ArchiveFile {
         ENTRY_MANIFEST_XML, this::setManifestXmlContent
     );
 
-    private final Map<String, WildcardContentHandler> wildcardContentHandlers = Map.of(
+    private final Map<String, SpecialDirectoryContentHandler> specialDirectoryContentHandlers = Map.of(
         DIR_THEMES, this::addThemeContent
     );
 
-    private final Map<String, WildcardFileHandler> wildcardFileHandlers = Map.of(
+    private final Map<String, SpecialDirectoryFileHandler> specialDirectoryFileHandlers = Map.of(
         DIR_THEMES, this::addThemeFile
     );
 
@@ -129,7 +129,7 @@ public class VsixPackage extends ArchiveFile {
     }
 
     //
-    // Static Methods
+    // Instantiation Methods
     //
 
     public static VsixPackage open(Path vsixPath) throws LocalizableIOException {
@@ -162,17 +162,14 @@ public class VsixPackage extends ArchiveFile {
 
     @Override
     public void addFile(Path sourcePath, String entryName) throws LocalizableIOException {
-        reporter.debug("addFile.p " + entryName);
         String folderName = folderName(entryName);
-        WildcardFileHandler wildcardHandler = wildcardFileHandlers.get(folderName);
+        SpecialDirectoryFileHandler wildcardHandler = specialDirectoryFileHandlers.get(folderName);
         if (wildcardHandler != null) {
-            reporter.debug("Using wildcard file handler");
             wildcardHandler.handle(sourcePath, entryName);
             return;
         }
         SpecialFileHandler fileHandler = fileHandlers.get(entryName);
         if (fileHandler != null) {
-            reporter.debug("Using special file handler");
             fileHandler.handle(sourcePath);
         } else {
             super.addFile(sourcePath, entryName);
@@ -181,29 +178,18 @@ public class VsixPackage extends ArchiveFile {
 
     @Override
     public void addFile(String content, String entryName) throws LocalizableIOException {
-        reporter.debug("addFile.c " + entryName);
         String folderName = folderName(entryName);
-        WildcardContentHandler wildcardHandler = wildcardContentHandlers.get(folderName);
+        SpecialDirectoryContentHandler wildcardHandler = specialDirectoryContentHandlers.get(folderName);
         if (wildcardHandler != null) {
-            reporter.debug("Using wildcard content handler");
             wildcardHandler.handle(content, entryName);
             return;
         }
         SpecialContentHandler contentHandler = contentHandlers.get(entryName);
         if (contentHandler != null) {
-            reporter.debug("Using special content handler");
             contentHandler.handle(content);
         } else {
             super.addFile(content, entryName);
         }
-    }
-
-    private String folderName(String entryName) {
-        int p = entryName.lastIndexOf('/');
-        if (p > 0) {
-            return entryName.substring(0, p + 1);
-        }
-        return "";
     }
 
     //
@@ -364,7 +350,7 @@ public class VsixPackage extends ArchiveFile {
     }
 
     //
-    //
+    // AutoCloseable
     //
 
 	@Override
@@ -518,8 +504,8 @@ public class VsixPackage extends ArchiveFile {
     //
 
     private void addManifestXmlFile(Path sourcePath) throws LocalizableIOException {
-        throw new UnimplementedMethodException();
         // TODO
+        throw new UnimplementedMethodException();
     }
 
     private void setManifestXmlContent(String content) throws LocalizableIOException {
@@ -562,7 +548,6 @@ public class VsixPackage extends ArchiveFile {
         sb.append("\t<PackageManifest Version=\"2.0.0\" xmlns=\"http://schemas.microsoft.com/developer/vsx-schema/2011\" xmlns:d=\"http://schemas.microsoft.com/developer/vsx-schema-design/2011\">\n");
         sb.append("\t\t<Metadata>\n");
 
-        // TODO: i18n
         sb.append("\t\t\t<Identity Language=\"");
         sb.append(identity.getLanguage());
         sb.append("\" Id=\"");
@@ -645,9 +630,16 @@ public class VsixPackage extends ArchiveFile {
                 }
             }
 		} catch (LocalizableIOException e) {
-            // If we reach here, the archive hasn't been created yet
-            // throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            // If we reach here, the archive hasn't been created yet, which is ok.
 		}
+    }
+
+    private String folderName(String entryName) {
+        int p = entryName.lastIndexOf('/');
+        if (p > 0) {
+            return entryName.substring(0, p + 1);
+        }
+        return "";
     }
 
     public static <A, B extends A> List<B> toImmutableList(
@@ -662,90 +654,4 @@ public class VsixPackage extends ArchiveFile {
 
         return List.copyOf(result);
     }
-
-    //
-    // Old code.
-    // TODO: What was resolveVariables for?
-    //
-
-    // private void _parsePackageManifest(String jsonString) throws LocalizableIOException {
-    //     if (jsonString == null || jsonString.isBlank()) return;
-
-
-    //     Properties properties = new Properties();
-    //     JsonAstParser jsonAstParser = new JsonAstParser().setOptions(JsonOptions.JSON5);
-    //     JsonObject json;
-    //     JsonNode doc = jsonAstParser.parse(jsonString);
-    //     if (!(doc instanceof JsonObject root)) {
-    //         throw new SchemaException(SchemaDiagnosticCode.ROOT_MUST_BE_MAP);
-    //     }
-
-    //     setName(root.getString("name"));
-
-    //     JsonArray categories = root.getArray("categories");
-    //     if (categories != null && !categories.isEmpty()) {
-    //         for (JsonNode catNode : categories) {
-    //             if (catNode instanceof JsonScalar scalar) {
-    //                 String catName = scalar.asString();
-    //                 // todo
-
-    //             }
-    //         }
-    //     }
-
-    //     // if (rootNode instanceof JsonObject m) {
-    //     //     json = m;
-    //     // } else {
-    //     //     throw new SchemaException(SchemaDiagnosticCode.ROOT_MUST_BE_MAP);
-    //     // }
-
-    //     // for (JsonProperty entry : json.getEntries()) {
-    //     //     String name = entry.getKey();
-    //     //     if (entry.getValue() instanceof ScalarAstNode scalar) {
-
-
-    //     //         // todo: Test this
-    //     //         String value = resolveVariables(scalar.asString(), properties);
-    //     //         metadata.set(name, value);
-
-
-    //     //     } else if (name.equals("categories") && entry.getValue() instanceof JsonArray seq) {
-    //     //         for (var item : seq) {
-    //     //             if (item instanceof ScalarAstNode s) {
-    //     //                 metadata.getCategories().add(s.asString());
-    //     //             }
-    //     //         }
-    //     //     } else if (name.equals("contributes") && entry.getValue() instanceof JsonObject contributes) {
-    //     //         var themesNode = contributes.get("themes");
-    //     //         if (themesNode instanceof JsonArray themesSeq) {
-    //     //             for (var themeEntry : themesSeq) {
-    //     //                 if (themeEntry instanceof JsonObject themeMap) {
-    //     //                     VsixThemeInfo themeInfo = new VsixThemeInfo();
-    //     //                     for (JsonProperty propEntry : themeMap.getEntries()) {
-    //     //                         String propKey = propEntry.getKey();
-    //     //                         if (propEntry.getValue() instanceof ScalarAstNode s) {
-    //     //                             themeInfo.getProperties().set(propKey, resolveVariables(s.asString(), properties));
-    //     //                         }
-    //     //                     }
-    //     //                     metadata.getThemes().add(themeInfo);
-    //     //                 }
-    //     //             }
-    //     //         }
-    //     //     }
-    //     // }
-    // }
-
-    // private String resolveVariables(String value, Properties properties) {
-    //     // todo: Improve this
-    //     if (value.startsWith("%")) {
-    //         if (value.length() > 2) {
-    //             String varName = value.substring(1, value.length() - 1);
-    //             String varValue = properties.getString(varName);
-    //             if (varValue != null) {
-    //                 value = varValue;
-    //             }
-    //         }
-    //     }
-    //     return value;
-    // }
 }
