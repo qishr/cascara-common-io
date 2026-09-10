@@ -391,9 +391,8 @@ public class VsixPackage extends ArchiveFile {
     }
 
     private void addThemeContent(String content, String entryName)  throws LocalizableIOException {
-        throw new UnimplementedMethodException();
-        // // TODO: Add the actual file
-        // extractUiThemeMetadata(content, entryName);
+        super.addFile(content, entryName);
+        extractUiThemeMetadata(content, entryName);
     }
 
     private void extractUiThemeMetadata(String jsonString, String entryName) {
