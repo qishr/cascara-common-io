@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Set;
 
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
-import io.github.qishr.cascara.common.util.Properties;
+import io.github.qishr.cascara.common.property.Properties;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
