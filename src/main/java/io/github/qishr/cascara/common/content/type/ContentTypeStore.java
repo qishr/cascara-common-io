@@ -45,19 +45,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import io.github.qishr.cascara.common.annotation.SingletonInitializer;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.common.property.Properties;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
+import io.github.qishr.cascara.common.service.ServiceProviderRoot;
 import io.github.qishr.cascara.common.service.ServiceProviderLayer;
+import io.github.qishr.cascara.common.util.Cascara;
 import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
 
 public class ContentTypeStore implements ContentTypeResolver {
-    private static final Path cascaraDir = Paths.get(System.getProperty("user.home")).resolve(".cascara");
-    private static final Path registryPath = cascaraDir.resolve("canonical-content-types.yaml");
+    // private static final Path cascaraDir = Paths.get(System.getProperty("user.home")).resolve(".cascara");
+    // private static final Path registryPath = cascaraDir.resolve("canonical-content-types.yaml");
+    private static final Path registryPath = Cascara.getContentTypesPath();
 
     private static ContentTypeStore instance;
     private static Properties serviceProperties;
@@ -65,9 +69,13 @@ public class ContentTypeStore implements ContentTypeResolver {
     private Reporter reporter = new NoOpReporter();
     private ContentTypeRegistry contentTypeRegistry;
 
-    private ContentTypeStore() {
-        init();
+    public ContentTypeStore() {
+
     }
+
+    // private ContentTypeStore() {
+    //     init();
+    // }
 
     @Override
     public Properties getServiceProperties() {
@@ -77,7 +85,8 @@ public class ContentTypeStore implements ContentTypeResolver {
         return serviceProperties;
     }
 
-    private void init() {
+    @SingletonInitializer
+    private void singleton() {
         YamlSerializer serializer = new YamlSerializer();
         if (Files.exists(registryPath)) {
             String yamlContent;
@@ -135,7 +144,7 @@ public class ContentTypeStore implements ContentTypeResolver {
 
         // Experimental:
         // Check with ServiceProviderLayer for content types registered by services
-        ServiceProviderLayer layer = ServiceProviderLayer.getRootLayer();
+        ServiceProviderRoot layer = ServiceProviderLayer.getRoot();
         contentType = resolveUsing(layer.getContentTypes(), type);
 
         return contentType;
@@ -169,6 +178,7 @@ public class ContentTypeStore implements ContentTypeResolver {
 
         String yamlContent = serializer.toString(contentTypeRegistry);
         try {
+            Files.createDirectories(registryPath.getParent());
             Files.writeString(registryPath, yamlContent);
         } catch (IOException e) {
             e.printStackTrace();
