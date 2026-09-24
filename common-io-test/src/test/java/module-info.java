@@ -32,17 +32,14 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-
-module test.common.io {
+module test {
     requires java.net.http;
-    requires transitive cascara.common;
-    requires transitive cascara.test.shared;
-    requires transitive test.providers;
+    requires cascara.common;
+    requires transitive cascara.common.io;
+    requires cascara.test.common.junit;
     requires org.junit.jupiter.api;
 
-    exports io.github.qishr.test.common.io;
+    exports test;
 
-
-    opens io.github.qishr.test.common.io;
-
+    opens test to org.junit.platform.commons;
 }

@@ -1,4 +1,4 @@
-package io.github.qishr.test.common.io;
+package test;
 
 import java.util.List;
 

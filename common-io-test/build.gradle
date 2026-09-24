@@ -20,9 +20,9 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter-engine")
     implementation('org.junit.platform:junit-platform-launcher')
     implementation('io.github.qishr:cascara-common')
-    implementation(project(':common-io'))
-    implementation(project(':common-io-test-providers'))
-    implementation(project(':cti-shared'))
+    implementation('io.github.qishr:cascara-test-common-junit')
+    implementation(project(':cascara-common-io'))
+    // implementation(project(':common-io-test-providers'))
 }
 
 
@@ -37,7 +37,7 @@ test {
     // modularity.inferModulePath = true
     // modularity.inferModulePath = false
 
-    project.logger.lifecycle("MP: $buildDir/modulepath")
+    // project.logger.lifecycle("MP: $buildDir/modulepath")
 
     jvmArgs = [
         // '--module-path', classpath.asPath,

@@ -1,4 +1,4 @@
-package io.github.qishr.test.common.io;
+package test;
 
 import io.github.qishr.cascara.common.util.Cascara;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SplOverrideTests extends CommonIoTestBase {
+public class SplOverrideTests extends TestBase {
 
     @Test
     void test_modulesLoad() throws IOException {

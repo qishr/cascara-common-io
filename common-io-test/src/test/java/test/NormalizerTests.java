@@ -33,7 +33,7 @@
 // version.
 
 
-package io.github.qishr.test.common.io;
+package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -49,7 +49,7 @@ import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.util.ContentType;
 
-public class NormalizerTests {
+public class NormalizerTests extends TestBase {
     @Test
     void noDuplicateTextType() {
         List<ContentType> contentTypes = List.of(
