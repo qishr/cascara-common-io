@@ -12,4 +12,7 @@ plugins {
 }
 
 
+include 'cti-shared'
 include 'common-io'
+include 'common-io-test'
+include 'common-io-test-providers'

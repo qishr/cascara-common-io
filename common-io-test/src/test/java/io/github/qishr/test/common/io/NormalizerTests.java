@@ -33,7 +33,7 @@
 // version.
 
 
-package io.github.qishr.cascara.common.content.type;
+package io.github.qishr.test.common.io;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -41,6 +41,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.qishr.cascara.common.content.type.ContentTypeNormalizer;
+import io.github.qishr.cascara.common.content.type.ContentTypeRegistry;
+import io.github.qishr.cascara.common.content.type.ContentTypeStore;
+import io.github.qishr.cascara.common.content.type.MergedContentType;
 import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.util.ContentType;

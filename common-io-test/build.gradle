@@ -1,0 +1,47 @@
+plugins {
+    id "io.github.qishr.cascara-meta.java-library" version "0.1.0"
+}
+
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+}
+
+
+dependencies {
+    implementation(platform("io.github.qishr:cascara-meta-bom:$cascara_version"))
+    implementation("org.junit.jupiter:junit-jupiter-api")
+    implementation("org.junit.jupiter:junit-jupiter-engine")
+    implementation('org.junit.platform:junit-platform-launcher')
+    implementation('io.github.qishr:cascara-common')
+    implementation(project(':common-io'))
+    implementation(project(':common-io-test-providers'))
+    implementation(project(':cti-shared'))
+}
+
+
+tasks.withType(Javadoc).configureEach {
+    options.addStringOption('Xdoclint:-missing', '-quiet')
+}
+
+
+test {
+    useJUnitPlatform()
+    // Ensure Gradle passes dependencies via --module-path for JPMS modules
+    // modularity.inferModulePath = true
+    // modularity.inferModulePath = false
+
+    project.logger.lifecycle("MP: $buildDir/modulepath")
+
+    jvmArgs = [
+        // '--module-path', classpath.asPath,
+        '--module-path', "$buildDir/modulepath",
+        '--add-modules', 'ALL-MODULE-PATH'
+    ]
+}
