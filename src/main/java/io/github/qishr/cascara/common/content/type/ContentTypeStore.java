@@ -59,8 +59,6 @@ import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
 
 public class ContentTypeStore implements ContentTypeResolver {
-    // private static final Path cascaraDir = Paths.get(System.getProperty("user.home")).resolve(".cascara");
-    // private static final Path registryPath = cascaraDir.resolve("canonical-content-types.yaml");
     private static final Path registryPath = Cascara.getContentTypesPath();
 
     private static ContentTypeStore instance;
@@ -72,10 +70,6 @@ public class ContentTypeStore implements ContentTypeResolver {
     public ContentTypeStore() {
 
     }
-
-    // private ContentTypeStore() {
-    //     init();
-    // }
 
     @Override
     public Properties getServiceProperties() {
