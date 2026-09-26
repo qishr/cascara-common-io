@@ -32,18 +32,18 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-
 package io.github.qishr.cascara.common.io.provider;
 
 import java.io.InputStream;
 import java.net.URI;
 
-import io.github.qishr.cascara.common.content.type.ContentTypeStore;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.io.ResourceStream;
-import io.github.qishr.cascara.common.util.UriScheme;
+import io.github.qishr.cascara.common.service.ServiceProviderLayer;
 import io.github.qishr.cascara.common.util.ContentType;
+import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.common.util.JreUtils;
+import io.github.qishr.cascara.common.util.UriScheme;
 
 public class ResResourceProvider extends AbstractResourceProvider  {
     private Class<?> clazz;
@@ -67,7 +67,9 @@ public class ResResourceProvider extends AbstractResourceProvider  {
         InputStream is = JreUtils.getResourceAsStream(clazz, path);
 
         // Infer content type from filename
-        ContentType contentType = ContentTypeStore.instance().resolve(fileNameExtension(path));
+        ContentTypeResolver resolver = ServiceProviderLayer.loadDefault(ContentTypeResolver.class);
+        ContentType contentType = resolver.resolve(fileNameExtension(path));
+
 
         if (contentType == null) {
             return new ResourceStream(is, null);

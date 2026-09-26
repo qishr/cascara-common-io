@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SplOverrideTests extends TestBase {
+public class SplOverrideTests extends CommonIoTestBase {
 
     @Test
     void test_modulesLoad() throws IOException {

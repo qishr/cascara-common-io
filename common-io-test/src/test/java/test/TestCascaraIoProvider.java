@@ -2,11 +2,13 @@ package test;
 
 import java.net.URI;
 
+import io.github.qishr.cascara.common.annotation.Priority;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.io.ResourceStream;
 import io.github.qishr.cascara.common.io.provider.AbstractResourceProvider;
 import io.github.qishr.cascara.common.util.UriScheme;
 
+@Priority(Priority.LOWEST)
 public class TestCascaraIoProvider extends AbstractResourceProvider {
 
     public TestCascaraIoProvider() {

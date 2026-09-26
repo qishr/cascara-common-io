@@ -39,48 +39,31 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import io.github.qishr.cascara.common.annotation.SingletonInitializer;
-import io.github.qishr.cascara.common.util.ContentTypeResolver;
-import io.github.qishr.cascara.common.property.Properties;
+import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
-import io.github.qishr.cascara.common.service.ServiceProviderRoot;
-import io.github.qishr.cascara.common.service.ServiceProviderLayer;
 import io.github.qishr.cascara.common.util.Cascara;
 import io.github.qishr.cascara.common.util.ContentType;
-import io.github.qishr.cascara.common.data.TextualTable;
+import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
 
 public class ContentTypeStore implements ContentTypeResolver {
     private static final Path registryPath = Cascara.getContentTypesPath();
 
-    private static ContentTypeStore instance;
-    private static Properties serviceProperties;
-
     private Reporter reporter = new NoOpReporter();
     private ContentTypeRegistry contentTypeRegistry;
 
-    public ContentTypeStore() {
-
-    }
-
-    @Override
-    public Properties getServiceProperties() {
-        if (serviceProperties == null) {
-            serviceProperties = new Properties();
-        }
-        return serviceProperties;
-    }
+    private ContentTypeStore() {}
 
     @SingletonInitializer
-    private void singleton() {
+    private void init() {
         YamlSerializer serializer = new YamlSerializer();
         if (Files.exists(registryPath)) {
             String yamlContent;
@@ -95,14 +78,6 @@ public class ContentTypeStore implements ContentTypeResolver {
         }
     }
 
-    public static ContentTypeStore instance() {
-        if (instance == null) {
-            instance = new ContentTypeStore();
-            // instance.init();
-        }
-        return instance;
-    }
-
     public void setReporter(Reporter reporter) {
         if (reporter == null) {
             this.reporter = new NoOpReporter();
@@ -111,10 +86,21 @@ public class ContentTypeStore implements ContentTypeResolver {
         }
     }
 
-    public List<ContentType> getAll() throws ContentTypeException {
+    @Override
+    public ContentType resolve(String type) {
+        ContentType contentType = resolveUsing(contentTypeRegistry.getRecords(), type);
+        if (contentType != null) {
+            return contentType;
+        }
+        return contentType;
+    }
+
+    @Override
+    public List<ContentType> getAll() {
         return contentTypeRegistry.getRecords();
     }
 
+    @Override
     public void addAll(List<? extends ContentType> contentTypes) {
         List<ContentType> allContentTypes = new ArrayList<>(contentTypeRegistry.getRecords());
         for (ContentType type : contentTypes) {
@@ -123,26 +109,16 @@ public class ContentTypeStore implements ContentTypeResolver {
         normalizeAndPersist(allContentTypes);
     }
 
+    @Override
     public void add(ContentType contentType) {
         List<ContentType> allContentTypes = new ArrayList<>(contentTypeRegistry.getRecords());
         allContentTypes.add(contentType);
         normalizeAndPersist(allContentTypes);
     }
 
-    public ContentType resolve(String type) {
-
-        ContentType contentType = resolveUsing(contentTypeRegistry.getRecords(), type);
-        if (contentType != null) {
-            return contentType;
-        }
-
-        // Experimental:
-        // Check with ServiceProviderLayer for content types registered by services
-        ServiceProviderRoot layer = ServiceProviderLayer.getRoot();
-        contentType = resolveUsing(layer.getContentTypes(), type);
-
-        return contentType;
-    }
+    //
+    // Private Methods
+    //
 
     private ContentType resolveUsing(Collection<ContentType> contentTypes, String type) {
         for (ContentType contentType : contentTypes) {
@@ -156,10 +132,6 @@ public class ContentTypeStore implements ContentTypeResolver {
         }
         return null;
     }
-
-    //
-    //
-    //
 
     private void normalizeAndPersist(List<ContentType> allContentTypes) {
         YamlSerializer serializer = new YamlSerializer();

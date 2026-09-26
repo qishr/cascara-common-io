@@ -56,6 +56,6 @@ module cascara.common.io {
              io.github.qishr.cascara.common.io.provider.HttpResourceProvider,
              io.github.qishr.cascara.common.io.provider.ResResourceProvider;
 
-    provides io.github.qishr.cascara.common.service.ServiceProvider
-        with io.github.qishr.cascara.common.content.type.ContentTypeStore;
+    // provides io.github.qishr.cascara.common.service.ServiceProvider
+    //     with io.github.qishr.cascara.common.content.type.ContentTypeStore;
 }

@@ -47,10 +47,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
-import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.util.ContentType;
 
 public final class ContentTypeNormalizer {

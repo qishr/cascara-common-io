@@ -49,7 +49,7 @@ import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.util.ContentType;
 
-public class NormalizerTests extends TestBase {
+public class NormalizerTests extends CommonIoTestBase {
     @Test
     void noDuplicateTextType() {
         List<ContentType> contentTypes = List.of(
@@ -66,9 +66,9 @@ public class NormalizerTests extends TestBase {
         normalizer.setReporter(new StandardReporter().setLevel(Level.DEBUG));
 
         List<MergedContentType> merged = normalizer.normalize(contentTypes);
-        ContentTypeStore.instance().reconcile(merged, registry);
+        contentTypeStore().reconcile(merged, registry);
 
-        ContentTypeStore.instance().debugOutputTypes(registry.getRecords());
+        contentTypeStore().debugOutputTypes(registry.getRecords());
 
         assertEquals(1, merged.size());
     }
@@ -87,9 +87,9 @@ public class NormalizerTests extends TestBase {
         normalizer.setReporter(new StandardReporter().setLevel(Level.DEBUG));
 
         List<MergedContentType> merged = normalizer.normalize(contentTypes);
-        ContentTypeStore.instance().reconcile(merged, registry);
+        contentTypeStore().reconcile(merged, registry);
 
-        ContentTypeStore.instance().debugOutputTypes(registry.getRecords());
+        contentTypeStore().debugOutputTypes(registry.getRecords());
 
         assertEquals(1, merged.size());
     }

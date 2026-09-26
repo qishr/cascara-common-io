@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.io.IOUtils;
 
-public class UriTests extends TestBase {
+public class UriTests extends CommonIoTestBase {
     @Test
     void test_absoluteFilePath() throws LocalizableIOException {
         assertEquals(
