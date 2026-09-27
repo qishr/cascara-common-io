@@ -13,5 +13,4 @@ plugins {
 
 
 include 'cascara-common-io'
-include 'common-io-test'
-// include 'common-io-test-providers'
+include 'spl-test'

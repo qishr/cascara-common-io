@@ -32,8 +32,7 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-
-package test;
+package test.spl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,7 +42,6 @@ import org.junit.jupiter.api.Test;
 
 import io.github.qishr.cascara.common.content.type.ContentTypeNormalizer;
 import io.github.qishr.cascara.common.content.type.ContentTypeRegistry;
-import io.github.qishr.cascara.common.content.type.ContentTypeStore;
 import io.github.qishr.cascara.common.content.type.MergedContentType;
 import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
