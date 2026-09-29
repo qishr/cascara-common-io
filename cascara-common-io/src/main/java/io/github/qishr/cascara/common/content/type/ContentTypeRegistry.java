@@ -39,11 +39,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.qishr.cascara.common.annotation.DataField;
+import io.github.qishr.cascara.common.annotation.SchemaDefinition;
+import io.github.qishr.cascara.common.annotation.SchemaProperty;
 import io.github.qishr.cascara.common.util.ContentType;
 
+@SchemaDefinition
 public class ContentTypeRegistry {
 
     @DataField
+    public static final String schema = "cascara://core/schema-service/draft/cascara.common.io/content-types/1.0.0";
+
+    @SchemaProperty
     public List<ContentType> records = new ArrayList<>();
 
     public ContentTypeRegistry() {}

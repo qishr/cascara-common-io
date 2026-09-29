@@ -38,7 +38,7 @@ import io.github.qishr.cascara.common.util.Cascara;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.common.io.provider.ResourceProvider;
 import io.github.qishr.cascara.common.service.ServiceMetadata;
-import io.github.qishr.cascara.common.service.ServiceProviderLayer;
+import io.github.qishr.cascara.common.service.SPL;
 
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +54,7 @@ public class SplOverrideTests extends CommonIoTestBase {
 
     @Test
     void test_modulesLoad() throws IOException {
-        ServiceProviderLayer rootLayer = ServiceProviderLayer.getRoot();
+        SPL rootLayer = SPL.getRoot();
         List<String> modules = rootLayer.getModules();
         assertTrue(modules.contains("cascara.common.io"));
     }
@@ -72,7 +72,7 @@ public class SplOverrideTests extends CommonIoTestBase {
             StandardOpenOption.CREATE
         );
 
-        ResourceProvider provider = ServiceProviderLayer.loadDefault(ResourceProvider.class);
+        ResourceProvider provider = SPL.loadDefault(ResourceProvider.class);
         assertNotNull(provider);
 
         // TODO: Verify the provider works

@@ -38,6 +38,7 @@ import io.github.qishr.cascara.common.util.UriScheme;
 import io.github.qishr.cascara.common.property.Properties;
 
 public abstract class AbstractResourceProvider implements ResourceProvider {
+
     private Properties properties;
     private String uriScheme;
 
@@ -53,7 +54,7 @@ public abstract class AbstractResourceProvider implements ResourceProvider {
     public Properties getServiceProperties() {
         if (properties == null) {
             properties = new Properties();
-            properties.set("uriScheme", uriScheme);
+            properties.set(URI_SCHEME, uriScheme);
         }
         return properties;
     }

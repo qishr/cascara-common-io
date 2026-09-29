@@ -48,7 +48,6 @@ import io.github.qishr.cascara.common.annotation.Nullable;
 import io.github.qishr.cascara.common.content.ResourceContent;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
-import io.github.qishr.cascara.common.io.provider.CascaraResourceProvider;
 import io.github.qishr.cascara.common.io.provider.FileResourceProvider;
 import io.github.qishr.cascara.common.io.provider.HttpResourceProvider;
 import io.github.qishr.cascara.common.io.provider.ResResourceProvider;
@@ -60,9 +59,10 @@ import io.github.qishr.cascara.common.util.UriScheme;
 public class IOUtils {
 
     private static final Map<UriScheme, ResourceProvider> providers = new HashMap<>();
+    private static final ResourceProviderFactory providerFactory = new ResourceProviderFactory();
 
     static {
-        providers.put(UriScheme.CASCARA, new CascaraResourceProvider());
+        // providers.put(UriScheme.CASCARA, new CascaraResourceProvider());
         providers.put(UriScheme.FILE, new FileResourceProvider());
         providers.put(UriScheme.HTTP, new HttpResourceProvider());
         providers.put(UriScheme.HTTPS, new HttpResourceProvider());
@@ -95,7 +95,7 @@ public class IOUtils {
         UriScheme scheme = UriScheme.of(uri);
         ResourceProvider provider = getResourceProvider(scheme);
         if (provider == null) {
-            throw new LocalizableIOException(GenericDiagnosticCode.NO_RESOURCE_PROVIDER, uri);
+            throw new LocalizableIOException(GenericDiagnosticCode.NO_RESOURCE_PROVIDER, scheme.asString());
         }
         return provider.getResourceAsStream(uri);
     }
@@ -139,13 +139,17 @@ public class IOUtils {
     @Nullable
     private static ResourceProvider getResourceProvider(UriScheme scheme) throws LocalizableIOException {
         ResourceProvider provider = providers.get(scheme);
-        if (provider == null && scheme == UriScheme.RES) {
-            Class<?> callingClass = getCallingClass();
-            if (callingClass == null) {
-                throw new LocalizableIOException(GenericDiagnosticCode.ERROR, "No " + scheme + " resource provider registered and unable to determine calling class");
+        if (provider == null) {
+            if (scheme == UriScheme.RES) {
+                Class<?> callingClass = getCallingClass();
+                if (callingClass == null) {
+                    throw new LocalizableIOException(GenericDiagnosticCode.ERROR, "No \"res\" resource provider registered and unable to determine calling class");
+                } else {
+                    provider = new ResResourceProvider(callingClass);
+                    providers.put(scheme, provider);
+                }
             } else {
-                provider = new ResResourceProvider(callingClass);
-                providers.put(scheme, provider);
+                provider = providerFactory.getResourceProvider(scheme.asString());
             }
         }
         return provider;

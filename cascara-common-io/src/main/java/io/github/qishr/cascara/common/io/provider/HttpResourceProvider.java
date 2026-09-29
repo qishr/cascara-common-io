@@ -51,7 +51,7 @@ import io.github.qishr.cascara.common.diagnostic.code.DnsDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
 import io.github.qishr.cascara.common.diagnostic.code.InetDiagnosticCode;
 import io.github.qishr.cascara.common.io.ResourceStream;
-import io.github.qishr.cascara.common.service.ServiceProviderLayer;
+import io.github.qishr.cascara.common.service.SPL;
 import io.github.qishr.cascara.common.util.UriScheme;
 import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
@@ -85,7 +85,7 @@ public class HttpResourceProvider extends AbstractResourceProvider {
                     .firstValue("Content-Type")
                     .orElse(null);
 
-            ContentTypeResolver resolver = ServiceProviderLayer.loadDefault(ContentTypeResolver.class);
+            ContentTypeResolver resolver = SPL.load(ContentTypeResolver.class);
             ContentType contentType = resolver.resolve(mime);
             if (contentType == null) {
                 contentType = new ContentType().withType(mime);

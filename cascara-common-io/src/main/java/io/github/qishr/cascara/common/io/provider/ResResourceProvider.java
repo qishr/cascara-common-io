@@ -39,7 +39,7 @@ import java.net.URI;
 
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
 import io.github.qishr.cascara.common.io.ResourceStream;
-import io.github.qishr.cascara.common.service.ServiceProviderLayer;
+import io.github.qishr.cascara.common.service.SPL;
 import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.common.util.JreUtils;
@@ -67,7 +67,7 @@ public class ResResourceProvider extends AbstractResourceProvider  {
         InputStream is = JreUtils.getResourceAsStream(clazz, path);
 
         // Infer content type from filename
-        ContentTypeResolver resolver = ServiceProviderLayer.loadDefault(ContentTypeResolver.class);
+        ContentTypeResolver resolver = SPL.load(ContentTypeResolver.class);
         ContentType contentType = resolver.resolve(fileNameExtension(path));
 
 
