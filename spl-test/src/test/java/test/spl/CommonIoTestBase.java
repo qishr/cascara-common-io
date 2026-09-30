@@ -41,7 +41,7 @@ import io.github.qishr.cascara.test.common.junit.util.VfsTestBase;
 
 public abstract class CommonIoTestBase extends VfsTestBase {
     protected ContentTypeStore contentTypeStore() {
-        ContentTypeResolver resolver = SPL.loadDefault(ContentTypeResolver.class);
+        ContentTypeResolver resolver = SPL.load(ContentTypeResolver.class);
         return (ContentTypeStore) resolver;
     }
 }

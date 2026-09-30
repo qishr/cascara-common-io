@@ -40,7 +40,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
-import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
+import io.github.qishr.cascara.common.diagnostic.message.GenericMessage;
 import io.github.qishr.cascara.common.util.ContentType;
 
 public final class ResourceStream extends InputStream {
@@ -62,7 +62,7 @@ public final class ResourceStream extends InputStream {
         try {
             stream.close();
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.read(b, 0, b.length);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.read(b, off, len);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.readNBytes(Integer.MAX_VALUE);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.readNBytes(len);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -106,7 +106,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.read(b, off, len);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -114,7 +114,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.skip(n);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ public final class ResourceStream extends InputStream {
         try {
             stream.skipNBytes(n);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -130,7 +130,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.available();
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -138,7 +138,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.transferTo(out);
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
     }
 
@@ -147,7 +147,7 @@ public final class ResourceStream extends InputStream {
         try {
             return stream.read();
         } catch (IOException e) {
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, e.getMessage());
         }
 	}
 }

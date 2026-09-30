@@ -35,20 +35,20 @@
 
 package io.github.qishr.cascara.common.content.type;
 
-import io.github.qishr.cascara.common.diagnostic.code.DiagnosticCode;
+import io.github.qishr.cascara.common.diagnostic.message.DiagnosticMessage;
 
-public enum ContentTypeDiagnosticCode implements DiagnosticCode {
+public enum ContentTypeMessage implements DiagnosticMessage {
     REGISTRY_READ_ERROR("CCT-001", "Failed to read content type registry"),
     REGISTRY_UPDATE_ERROR("CCT-002", "Failed to update content type registry");
 
     private final String code;
-    private final String message;
+    private final String format;
 
-    ContentTypeDiagnosticCode(String code, String message) {
+    ContentTypeMessage(String code, String format) {
         this.code = code;
-        this.message = message;
+        this.format = format;
     }
 
     @Override public String getCode() { return code; }
-    @Override public String getMessage() { return message; }
+    @Override public String getFormat() { return format; }
 }

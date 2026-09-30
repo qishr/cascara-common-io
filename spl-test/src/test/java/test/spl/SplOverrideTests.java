@@ -72,7 +72,7 @@ public class SplOverrideTests extends CommonIoTestBase {
             StandardOpenOption.CREATE
         );
 
-        ResourceProvider provider = SPL.loadDefault(ResourceProvider.class);
+        ResourceProvider provider = SPL.load(ResourceProvider.class);
         assertNotNull(provider);
 
         // TODO: Verify the provider works

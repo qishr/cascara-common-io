@@ -47,7 +47,7 @@ import java.util.Map;
 import io.github.qishr.cascara.common.annotation.Nullable;
 import io.github.qishr.cascara.common.content.ResourceContent;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
-import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
+import io.github.qishr.cascara.common.diagnostic.message.GenericMessage;
 import io.github.qishr.cascara.common.io.provider.FileResourceProvider;
 import io.github.qishr.cascara.common.io.provider.HttpResourceProvider;
 import io.github.qishr.cascara.common.io.provider.ResResourceProvider;
@@ -85,7 +85,7 @@ public class IOUtils {
 			content = new String(res.stream.readAllBytes(), StandardCharsets.UTF_8);
 		} catch (IOException e) {
             // TODO: i18n
-            throw new LocalizableIOException(e, GenericDiagnosticCode.IO_ERROR, "Failed to read resource: " + e.getMessage());
+            throw new LocalizableIOException(e, GenericMessage.IO_ERROR, "Failed to read resource: " + e.getMessage());
 		}
         return new ResourceContent(content, res.contentType);
     }
@@ -95,7 +95,7 @@ public class IOUtils {
         UriScheme scheme = UriScheme.of(uri);
         ResourceProvider provider = getResourceProvider(scheme);
         if (provider == null) {
-            throw new LocalizableIOException(GenericDiagnosticCode.NO_RESOURCE_PROVIDER, scheme.asString());
+            throw new LocalizableIOException(GenericMessage.NO_RESOURCE_PROVIDER, scheme.asString());
         }
         return provider.getResourceAsStream(uri);
     }
@@ -107,7 +107,7 @@ public class IOUtils {
     public static URI normalizeUri(URI uri) throws LocalizableIOException {
         UriScheme scheme = UriScheme.of(uri);
         if (scheme == UriScheme.UNKNOWN) {
-            throw new LocalizableIOException(GenericDiagnosticCode.UNKNOWN_URI_SCHEME, uri);
+            throw new LocalizableIOException(GenericMessage.UNKNOWN_URI_SCHEME, uri);
         }
         if (scheme == UriScheme.NONE) {
             Path path = Paths.get(uri.toString()).toAbsolutePath();
@@ -143,7 +143,7 @@ public class IOUtils {
             if (scheme == UriScheme.RES) {
                 Class<?> callingClass = getCallingClass();
                 if (callingClass == null) {
-                    throw new LocalizableIOException(GenericDiagnosticCode.ERROR, "No \"res\" resource provider registered and unable to determine calling class");
+                    throw new LocalizableIOException(GenericMessage.ERROR, "No \"res\" resource provider registered and unable to determine calling class");
                 } else {
                     provider = new ResResourceProvider(callingClass);
                     providers.put(scheme, provider);

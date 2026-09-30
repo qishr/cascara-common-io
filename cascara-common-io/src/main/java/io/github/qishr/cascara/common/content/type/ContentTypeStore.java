@@ -48,7 +48,7 @@ import io.github.qishr.cascara.common.annotation.SingletonInitializer;
 import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.diagnostic.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
-import io.github.qishr.cascara.common.diagnostic.code.GenericDiagnosticCode;
+import io.github.qishr.cascara.common.diagnostic.message.GenericMessage;
 import io.github.qishr.cascara.common.util.Cascara;
 import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
@@ -70,7 +70,7 @@ public class ContentTypeStore implements ContentTypeResolver {
             try {
                 yamlContent = Files.readString(registryPath);
             } catch (IOException e) {
-                throw new ContentTypeException(e, ContentTypeDiagnosticCode.REGISTRY_READ_ERROR);
+                throw new ContentTypeException(e, ContentTypeMessage.REGISTRY_READ_ERROR);
             }
             contentTypeRegistry = serializer.fromString(yamlContent, ContentTypeRegistry.class);
         } else {
@@ -148,7 +148,7 @@ public class ContentTypeStore implements ContentTypeResolver {
             Files.writeString(registryPath, yamlContent);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new ContentTypeException(e, ContentTypeDiagnosticCode.REGISTRY_UPDATE_ERROR);
+            throw new ContentTypeException(e, ContentTypeMessage.REGISTRY_UPDATE_ERROR);
         }
     }
 
@@ -238,7 +238,7 @@ public class ContentTypeStore implements ContentTypeResolver {
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
         } catch (IOException e) {
-            reporter.error(GenericDiagnosticCode.IO_ERROR, "Failed to write debug output: " + e.getMessage());
+            reporter.error(GenericMessage.IO_ERROR, "Failed to write debug output: " + e.getMessage());
         }
     }
 }

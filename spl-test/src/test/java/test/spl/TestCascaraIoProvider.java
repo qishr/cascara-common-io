@@ -38,6 +38,7 @@ import java.net.URI;
 
 import io.github.qishr.cascara.common.annotation.Priority;
 import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
+import io.github.qishr.cascara.common.diagnostic.UnimplementedMethodException;
 import io.github.qishr.cascara.common.io.ResourceStream;
 import io.github.qishr.cascara.common.io.provider.AbstractResourceProvider;
 import io.github.qishr.cascara.common.util.UriScheme;
@@ -51,8 +52,7 @@ public class TestCascaraIoProvider extends AbstractResourceProvider {
 
     @Override
     public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getResourceAsStream'");
+        throw new UnimplementedMethodException();
     }
 
 }
