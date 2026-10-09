@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 import io.github.qishr.cascara.common.content.type.ContentTypeNormalizer;
 import io.github.qishr.cascara.common.content.type.ContentTypeRegistry;
 import io.github.qishr.cascara.common.content.type.MergedContentType;
-import io.github.qishr.cascara.common.diagnostic.StandardReporter;
+import io.github.qishr.cascara.common.diagnostic.report.LocalReporter;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.util.ContentType;
 
@@ -61,7 +61,7 @@ public class NormalizerTests extends CommonIoTestBase {
 
         ContentTypeRegistry registry = new ContentTypeRegistry();
         ContentTypeNormalizer normalizer = new ContentTypeNormalizer();
-        normalizer.setReporter(new StandardReporter().setLevel(Level.DEBUG));
+        normalizer.setReporter(new LocalReporter().setLevel(Level.DEBUG));
 
         List<MergedContentType> merged = normalizer.normalize(contentTypes);
         contentTypeStore().reconcile(merged, registry);
@@ -82,7 +82,7 @@ public class NormalizerTests extends CommonIoTestBase {
 
         ContentTypeRegistry registry = new ContentTypeRegistry();
         ContentTypeNormalizer normalizer = new ContentTypeNormalizer();
-        normalizer.setReporter(new StandardReporter().setLevel(Level.DEBUG));
+        normalizer.setReporter(new LocalReporter().setLevel(Level.DEBUG));
 
         List<MergedContentType> merged = normalizer.normalize(contentTypes);
         contentTypeStore().reconcile(merged, registry);

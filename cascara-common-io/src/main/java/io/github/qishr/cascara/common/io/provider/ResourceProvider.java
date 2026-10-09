@@ -36,7 +36,7 @@ package io.github.qishr.cascara.common.io.provider;
 
 import java.net.URI;
 
-import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
+import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
 import io.github.qishr.cascara.common.io.ResourceStream;
 import io.github.qishr.cascara.common.service.ServiceProvider;
 

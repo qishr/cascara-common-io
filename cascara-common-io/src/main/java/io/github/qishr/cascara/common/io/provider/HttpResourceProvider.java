@@ -46,7 +46,7 @@ import java.net.http.HttpTimeoutException;
 
 import javax.net.ssl.SSLHandshakeException;
 
-import io.github.qishr.cascara.common.diagnostic.LocalizableIOException;
+import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.message.DnsMessage;
 import io.github.qishr.cascara.common.diagnostic.message.GenericMessage;
 import io.github.qishr.cascara.common.diagnostic.message.InetMessage;
