@@ -32,36 +32,16 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package test.spl;
+package integration.test;
 
-import java.util.List;
-
-import io.github.qishr.cascara.common.annotation.Priority;
-import io.github.qishr.cascara.common.diagnostic.exception.UnimplementedMethodException;
-import io.github.qishr.cascara.common.util.ContentType;
+import io.github.qishr.cascara.common.content.type.ContentTypeStore;
+import io.github.qishr.cascara.common.service.SPL;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
+import io.github.qishr.cascara.test.common.junit.util.VfsTestBase;
 
-@Priority(Priority.LOWEST)
-public class TestContentTypeStore implements ContentTypeResolver {
-
-    @Override
-    public ContentType resolve(String type) {
-        throw new UnimplementedMethodException();
+public abstract class CommonIoTestBase extends VfsTestBase {
+    protected ContentTypeStore contentTypeStore() {
+        ContentTypeResolver resolver = SPL.load(ContentTypeResolver.class);
+        return (ContentTypeStore) resolver;
     }
-
-    @Override
-    public List<ContentType> getAll() {
-        throw new UnimplementedMethodException();
-    }
-
-    @Override
-    public void add(ContentType contentType) {
-        throw new UnimplementedMethodException();
-    }
-
-    @Override
-    public void addAll(List<? extends ContentType> contentTypes) {
-        throw new UnimplementedMethodException();
-    }
-
 }

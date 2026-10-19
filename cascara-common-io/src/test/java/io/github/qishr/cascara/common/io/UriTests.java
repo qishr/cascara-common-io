@@ -32,16 +32,34 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package test.spl;
+package io.github.qishr.cascara.common.io;
 
-import io.github.qishr.cascara.common.content.type.ContentTypeStore;
-import io.github.qishr.cascara.common.service.SPL;
-import io.github.qishr.cascara.common.util.ContentTypeResolver;
-import io.github.qishr.cascara.test.common.junit.util.VfsTestBase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class CommonIoTestBase extends VfsTestBase {
-    protected ContentTypeStore contentTypeStore() {
-        ContentTypeResolver resolver = SPL.load(ContentTypeResolver.class);
-        return (ContentTypeStore) resolver;
+import java.net.URI;
+
+import org.junit.jupiter.api.Test;
+
+import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
+
+public class UriTests {
+    @Test
+    void test_absoluteFilePath() throws LocalizableIOException {
+        assertEquals(
+            "file:///tmp/a",
+            IOUtils.normalizeUri(URI.create(
+                "/tmp/a"
+            )).toString()
+        );
+    }
+
+    @Test
+    void test_relativeFilePath() throws LocalizableIOException {
+        assertEquals(
+            "file://" + System.getProperty("user.dir") + "/tmp/a",
+            IOUtils.normalizeUri(URI.create(
+                "tmp/a"
+            )).toString()
+        );
     }
 }

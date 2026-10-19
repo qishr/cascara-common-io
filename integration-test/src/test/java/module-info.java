@@ -32,14 +32,14 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-module test.spl {
+module integration.test {
     requires java.net.http;
     requires transitive cascara.common;
     requires transitive cascara.common.io;
     requires cascara.test.common.junit;
     requires org.junit.jupiter.api;
 
-    exports test.spl;
+    exports integration.test;
 
-    opens test.spl to org.junit.platform.commons;
+    opens integration.test to org.junit.platform.commons;
 }

@@ -32,7 +32,7 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-
+/// Cascara common IO and content type utilities
 module cascara.common.io {
     requires java.net.http;
     requires transitive cascara.common;

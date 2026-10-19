@@ -32,35 +32,38 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package test.spl;
+package integration.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 
-import java.net.URI;
+import io.github.qishr.cascara.common.annotation.NoAutoRegistration;
+import io.github.qishr.cascara.common.annotation.Priority;
+import io.github.qishr.cascara.common.diagnostic.exception.UnimplementedMethodException;
+import io.github.qishr.cascara.common.util.ContentType;
+import io.github.qishr.cascara.common.util.ContentTypeResolver;
 
-import org.junit.jupiter.api.Test;
+@NoAutoRegistration
+@Priority(Priority.LOWEST)
+public class TestContentTypeStore implements ContentTypeResolver {
 
-import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
-import io.github.qishr.cascara.common.io.IOUtils;
-
-public class UriTests extends CommonIoTestBase {
-    @Test
-    void test_absoluteFilePath() throws LocalizableIOException {
-        assertEquals(
-            "file:///tmp/a",
-            IOUtils.normalizeUri(URI.create(
-                "/tmp/a"
-            )).toString()
-        );
+    @Override
+    public ContentType resolve(String type) {
+        throw new UnimplementedMethodException();
     }
 
-    @Test
-    void test_relativeFilePath() throws LocalizableIOException {
-        assertEquals(
-            "file://" + System.getProperty("user.dir") + "/tmp/a",
-            IOUtils.normalizeUri(URI.create(
-                "tmp/a"
-            )).toString()
-        );
+    @Override
+    public List<ContentType> getAll() {
+        throw new UnimplementedMethodException();
     }
+
+    @Override
+    public void add(ContentType contentType) {
+        throw new UnimplementedMethodException();
+    }
+
+    @Override
+    public void addAll(List<? extends ContentType> contentTypes) {
+        throw new UnimplementedMethodException();
+    }
+
 }

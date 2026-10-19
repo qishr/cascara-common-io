@@ -32,7 +32,7 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package test.spl;
+package integration.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

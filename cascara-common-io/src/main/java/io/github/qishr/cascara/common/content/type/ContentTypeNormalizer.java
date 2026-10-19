@@ -50,6 +50,7 @@ import java.util.stream.Collectors;
 import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.diagnostic.report.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.report.Reporter;
+import io.github.qishr.cascara.common.diagnostic.exception.UnexpectedNullParameterException;
 import io.github.qishr.cascara.common.diagnostic.message.GenericMessage;
 import io.github.qishr.cascara.common.util.ContentType;
 
@@ -84,6 +85,7 @@ public final class ContentTypeNormalizer {
     }
 
     private boolean hasConcreteMimeType(ContentType ct) {
+        if (ct == null) throw new UnexpectedNullParameterException("ct");
         return ct.getMimeTypes().stream()
                  .anyMatch(m -> !m.endsWith("/*") && !m.equals("*/*"));
     }

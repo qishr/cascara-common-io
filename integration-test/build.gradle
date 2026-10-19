@@ -22,7 +22,15 @@ dependencies {
     implementation('io.github.qishr:cascara-common')
     implementation('io.github.qishr:cascara-test-common-junit')
     implementation(project(':cascara-common-io'))
-    // implementation(project(':common-io-test-providers'))
+}
+
+
+tasks.named('javadocJar') {
+    enabled = false
+}
+
+tasks.named('sourcesJar') {
+    enabled = false
 }
 
 

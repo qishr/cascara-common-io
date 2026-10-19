@@ -1,21 +1,48 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
 
-    "java.test.defaultConfig": "tests",
-    "java.test.config": [
-        {
-            "name": "test",
-            "modulePaths": ["${workspaceFolder}/common-io-test/build/modulepath"],
-            "module": "test",
-            "classPaths": [
-                "${workspaceFolder}/common-io-test/build/classes/java/main",
-                "${workspaceFolder}/common-io-test/build/resources/main"
-            ]
-        }
-    ],
+    "java.test.config":  {
+        "vmArgs": [
+            "--add-opens", "java.base/java.lang=cascara.common.io",
+            "--add-opens", "java.base/java.lang=integration.test",
+        ],
+        "modulePaths": [
+            // cascara-cpmmon requires sources and javadoc, so we can't use its libs folder
+            // as it contains sources and libs with the same module names.
+            "${workspaceFolder}/cascara-common-io/build/modulepath",
 
-    "java.project.outputPath": "build/classes/java/main",
-    "files.exclude": {
-        "**/bin": true
+            // For everything else we use libs rather than modulepath to avoid
+            // a duplicate cascara-common module.
+            "${workspaceFolder}/integration-test/build/libs",
+            // "${workspaceFolder}/integration-test-fixtures/build/libs",
+        ],
+        "classPaths": [
+            "${workspaceFolder}/cascara-common-io/build/classes/java/main",
+            "${workspaceFolder}/cascara-common-io/build/resources/main",
+            "${workspaceFolder}/cascara-common-io/build/classes/java/test",
+            "${workspaceFolder}/cascara-common-io/build/resources/test",
+            "${workspaceFolder}/integration-test/build/classes/java/test",
+            "${workspaceFolder}/integration-test/build/resources/test",
+        ],
     }
+
+
+    // "java.test.defaultConfig": "tests",
+    // "java.test.config": [
+    //     {
+    //         "name": "test",
+    //         "modulePaths": ["${workspaceFolder}/integration-test/build/modulepath"],
+    //         "module": "test",
+    //         "classPaths": [
+    //             "${workspaceFolder}/integration-test/build/classes/java/main",
+    //             "${workspaceFolder}/integration-test/build/resources/main"
+    //         ]
+    //     }
+    // ],
+
+    // "java.project.outputPath": "build/classes/java/main",
+    // "files.exclude": {
+    //     "**/bin": true
+    // }
 }
