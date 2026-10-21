@@ -32,7 +32,7 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package integration.test;
+package integration.test.io;
 
 import io.github.qishr.cascara.common.util.Cascara;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
@@ -41,6 +41,8 @@ import io.github.qishr.cascara.common.service.ServiceMetadata;
 import io.github.qishr.cascara.common.service.SPL;
 
 import org.junit.jupiter.api.Test;
+
+import integration.test.content.TestContentTypeStore;
 
 import java.io.IOException;
 import java.nio.file.Files;

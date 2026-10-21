@@ -69,10 +69,10 @@ public class ContentTypeStore implements ContentTypeResolver {
             String yamlContent;
             try {
                 yamlContent = Files.readString(registryPath);
+                contentTypeRegistry = serializer.fromString(yamlContent, ContentTypeRegistry.class);
             } catch (IOException e) {
                 throw new ContentTypeException(e, ContentTypeMessage.REGISTRY_READ_ERROR);
             }
-            contentTypeRegistry = serializer.fromString(yamlContent, ContentTypeRegistry.class);
         } else {
             contentTypeRegistry = new ContentTypeRegistry();
         }

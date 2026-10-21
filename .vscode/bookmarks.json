@@ -9,6 +9,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "cascara-common-io/src/main/java/io/github/qishr/cascara/common/io/provider/ResResourceProvider.java",
+			"bookmarks": [
+				{
+					"line": 70,
+					"column": 17,
+					"label": ""
+				}
+			]
 		}
 	]
 }

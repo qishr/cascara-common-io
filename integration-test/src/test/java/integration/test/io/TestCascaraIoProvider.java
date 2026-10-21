@@ -32,16 +32,27 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package integration.test;
+package integration.test.io;
 
-import io.github.qishr.cascara.common.content.type.ContentTypeStore;
-import io.github.qishr.cascara.common.service.SPL;
-import io.github.qishr.cascara.common.util.ContentTypeResolver;
-import io.github.qishr.cascara.test.common.junit.util.VfsTestBase;
+import java.net.URI;
 
-public abstract class CommonIoTestBase extends VfsTestBase {
-    protected ContentTypeStore contentTypeStore() {
-        ContentTypeResolver resolver = SPL.load(ContentTypeResolver.class);
-        return (ContentTypeStore) resolver;
+import io.github.qishr.cascara.common.annotation.Priority;
+import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
+import io.github.qishr.cascara.common.diagnostic.exception.UnimplementedMethodException;
+import io.github.qishr.cascara.common.io.ResourceStream;
+import io.github.qishr.cascara.common.io.provider.AbstractResourceProvider;
+import io.github.qishr.cascara.common.util.UriScheme;
+
+@Priority(Priority.LOWEST)
+public class TestCascaraIoProvider extends AbstractResourceProvider {
+
+    public TestCascaraIoProvider() {
+        super(UriScheme.CASCARA);
     }
+
+    @Override
+    public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+        throw new UnimplementedMethodException();
+    }
+
 }

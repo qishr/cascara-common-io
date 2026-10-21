@@ -14,3 +14,4 @@ plugins {
 
 include 'cascara-common-io'
 include 'integration-test'
+include 'integration-test-fixtures'

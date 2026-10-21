@@ -32,38 +32,9 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package integration.test;
+module integration.test.fixtures {
+    requires transitive cascara.common;
+    requires transitive cascara.common.io;
 
-import java.util.List;
-
-import io.github.qishr.cascara.common.annotation.NoAutoRegistration;
-import io.github.qishr.cascara.common.annotation.Priority;
-import io.github.qishr.cascara.common.diagnostic.exception.UnimplementedMethodException;
-import io.github.qishr.cascara.common.util.ContentType;
-import io.github.qishr.cascara.common.util.ContentTypeResolver;
-
-@NoAutoRegistration
-@Priority(Priority.LOWEST)
-public class TestContentTypeStore implements ContentTypeResolver {
-
-    @Override
-    public ContentType resolve(String type) {
-        throw new UnimplementedMethodException();
-    }
-
-    @Override
-    public List<ContentType> getAll() {
-        throw new UnimplementedMethodException();
-    }
-
-    @Override
-    public void add(ContentType contentType) {
-        throw new UnimplementedMethodException();
-    }
-
-    @Override
-    public void addAll(List<? extends ContentType> contentTypes) {
-        throw new UnimplementedMethodException();
-    }
-
+    exports integration.test.fixtures.isolated;
 }

@@ -1,5 +1,6 @@
 plugins {
-    id "io.github.qishr.cascara-meta.java-library" version "0.1.0"
+    id "java-library"
+    id "io.github.qishr.cascara.conventions" version "0.1.0"
 }
 
 
@@ -8,11 +9,9 @@ repositories {
 	mavenCentral()
 }
 
-
 tasks.withType(JavaCompile).configureEach {
     options.release = 21
 }
-
 
 dependencies {
     implementation(platform("io.github.qishr:cascara-meta-bom:$cascara_version"))
@@ -20,8 +19,10 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter-engine")
     implementation('org.junit.platform:junit-platform-launcher')
     implementation('io.github.qishr:cascara-common')
+    implementation('io.github.qishr:cascara-lang-json')
     implementation('io.github.qishr:cascara-test-common-junit')
     implementation(project(':cascara-common-io'))
+    implementation(project(':integration-test-fixtures'))
 }
 
 
@@ -38,6 +39,19 @@ tasks.withType(Javadoc).configureEach {
     options.addStringOption('Xdoclint:-missing', '-quiet')
 }
 
+compileTestJava {
+    // Ensures main classes are always compiled and available on the patch path
+    dependsOn compileJava
+    options.compilerArgs += [
+        '--patch-module', "integration.test=${sourceSets.main.output.classesDirs.asPath}"
+    ]
+}
+
+// tasks.named('test', Test) {
+//     jvmArgs += [
+//         '--patch-module', "integration.test=${sourceSets.main.output.classesDirs.asPath}"
+//     ]
+// }
 
 test {
     useJUnitPlatform()
@@ -46,3 +60,46 @@ test {
         '--add-modules', 'ALL-MODULE-PATH'
     ]
 }
+
+
+// test {
+//     modularity.inferModulePath = true
+
+//     // Capture source set output paths lazily during configuration time
+//     def mainClassesDir = sourceSets.main.output.classesDirs
+//     def testClassesDir = sourceSets.test.output.classesDirs
+//     def runtimeClasspath = configurations.testRuntimeClasspath
+
+//     doFirst {
+//         def mainModuleName = 'integration.test'
+
+//         jvmArgs([
+//             '--module-path', "${testClassesDir.asPath}${File.pathSeparator}${runtimeClasspath.asPath}",
+//             '--add-modules', mainModuleName,
+//             '--patch-module', "${mainModuleName}=${mainClassesDir.asPath}",
+//             '--add-reads', "${mainModuleName}=ALL-UNNAMED",
+//             '--add-reads', "${mainModuleName}=org.junit.jupiter.api",
+//             '--add-reads', "${mainModuleName}=org.junit.platform.commons",
+//             '--add-opens', "${mainModuleName}/integration.test.isolated=org.junit.platform.commons",
+//             '--add-opens', "${mainModuleName}/integration.test.isolated=org.junit.jupiter.api",
+//         ])
+//     }
+
+//     // doFirst {
+//     //     def mainModuleName = 'integration.test'
+//     //     def mainClassesDir = sourceSets.main.output.classesDirs.asPath
+
+//     //     // If a patch module isn't already supplied by an external runner, inject it safely
+//     //     if (!jvmArgs.any { it.startsWith('--patch-module') }) {
+//     //         jvmArgs "--patch-module", "${mainModuleName}=${mainClassesDir}"
+//     //     }
+
+//     //     jvmArgs([
+//     //         '--add-reads', "${mainModuleName}=ALL-UNNAMED",
+//     //         '--add-reads', "${mainModuleName}=org.junit.jupiter.api",
+//     //         '--add-reads', "${mainModuleName}=org.junit.platform.commons",
+//     //         '--add-opens', "${mainModuleName}/integration.test.isolated=org.junit.platform.commons",
+//     //         '--add-opens', "${mainModuleName}/integration.test.isolated=org.junit.jupiter.api"
+//     //     ])
+//     // }
+// }

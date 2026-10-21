@@ -32,26 +32,37 @@
 // you do not wish to do so, delete this exception statement from your
 // version.
 
-package integration.test;
+package integration.test.content;
 
-import java.net.URI;
+import java.util.List;
 
+import io.github.qishr.cascara.common.annotation.NoAutoRegistration;
 import io.github.qishr.cascara.common.annotation.Priority;
-import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
 import io.github.qishr.cascara.common.diagnostic.exception.UnimplementedMethodException;
-import io.github.qishr.cascara.common.io.ResourceStream;
-import io.github.qishr.cascara.common.io.provider.AbstractResourceProvider;
-import io.github.qishr.cascara.common.util.UriScheme;
+import io.github.qishr.cascara.common.util.ContentType;
+import io.github.qishr.cascara.common.util.ContentTypeResolver;
 
+@NoAutoRegistration
 @Priority(Priority.LOWEST)
-public class TestCascaraIoProvider extends AbstractResourceProvider {
+public class TestContentTypeStore implements ContentTypeResolver {
 
-    public TestCascaraIoProvider() {
-        super(UriScheme.CASCARA);
+    @Override
+    public ContentType resolve(String type) {
+        throw new UnimplementedMethodException();
     }
 
     @Override
-    public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+    public List<ContentType> getAll() {
+        throw new UnimplementedMethodException();
+    }
+
+    @Override
+    public void add(ContentType contentType) {
+        throw new UnimplementedMethodException();
+    }
+
+    @Override
+    public void addAll(List<? extends ContentType> contentTypes) {
         throw new UnimplementedMethodException();
     }
 
