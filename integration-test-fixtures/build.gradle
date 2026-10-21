@@ -20,8 +20,8 @@ dependencies {
     implementation('io.github.qishr:cascara-common')
     implementation('io.github.qishr:cascara-lang-json')
     implementation('io.github.qishr:cascara-test-common-junit')
-    // implementation(project(':cascara-common-io'))
-    implementation('io.github.qishr:cascara-common-io')
+    implementation(project(':cascara-common-io'))
+    // implementation('io.github.qishr:cascara-common-io')
 }
 
 
