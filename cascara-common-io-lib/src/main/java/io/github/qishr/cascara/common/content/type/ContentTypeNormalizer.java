@@ -58,7 +58,11 @@ public final class ContentTypeNormalizer {
 
     private Reporter reporter = new NoOpReporter();
 
-    public void setReporter(Reporter reporter) { this.reporter = reporter; }
+    public void setReporter(Reporter reporter) {
+        if (reporter != null) {
+            this.reporter = reporter;
+        }
+    }
 
     public List<MergedContentType> normalize(List<ContentType> all) {
         List<ContentType> concreteTypes = all.stream()

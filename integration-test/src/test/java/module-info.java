@@ -36,9 +36,9 @@ module integration.test {
     requires java.net.http;
     requires transitive cascara.common;
     requires transitive cascara.common.io;
-    requires cascara.lang.json;
+    requires transitive cascara.lang.json;
 
-    requires integration.fixtures;
+    requires integration.test.fixtures;
     requires cascara.test.common.junit;
     requires org.junit.jupiter.api;
 

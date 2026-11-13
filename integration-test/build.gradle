@@ -1,6 +1,7 @@
 plugins {
     id "java-library"
     id "io.github.qishr.cascara.conventions" version "0.1.0"
+    id 'eclipse'
 }
 
 
@@ -9,9 +10,13 @@ repositories {
 	mavenCentral()
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.release = 21
-}
+
+java { modularity.inferModulePath = true }
+
+
+// tasks.withType(JavaCompile).configureEach {
+//     options.release = 21
+// }
 
 dependencies {
     implementation(platform("io.github.qishr:cascara-meta-bom:$cascara_version"))
@@ -20,8 +25,8 @@ dependencies {
     implementation('org.junit.platform:junit-platform-launcher')
     implementation('io.github.qishr:cascara-common')
     implementation('io.github.qishr:cascara-lang-json')
-    implementation('io.github.qishr:cascara-test-common-junit')
-    implementation(project(':cascara-common-io'))
+    testImplementation('io.github.qishr:cascara-test-common-junit')
+    implementation(project(':cascara-common-io-lib'))
     implementation(project(':integration-test-fixtures'))
 }
 
@@ -34,18 +39,21 @@ tasks.named('sourcesJar') {
     enabled = false
 }
 
+tasks.named('compileTestJava', JavaCompile) {
+    modularity.inferModulePath = true
+}
 
 tasks.withType(Javadoc).configureEach {
     options.addStringOption('Xdoclint:-missing', '-quiet')
 }
 
-compileTestJava {
-    // Ensures main classes are always compiled and available on the patch path
-    dependsOn compileJava
-    options.compilerArgs += [
-        '--patch-module', "integration.test=${sourceSets.main.output.classesDirs.asPath}"
-    ]
-}
+// compileTestJava {
+//     // Ensures main classes are always compiled and available on the patch path
+//     dependsOn compileJava
+//     options.compilerArgs += [
+//         '--patch-module', "integration.test=${sourceSets.main.output.classesDirs.asPath}"
+//     ]
+// }
 
 // tasks.named('test', Test) {
 //     jvmArgs += [
@@ -103,3 +111,16 @@ test {
 //     //     ])
 //     // }
 // }
+
+eclipse {
+    classpath {
+        file {
+            whenMerged {
+                // Force Buildship to mark external test JARs as JPMS modules for JDT LS
+                entries.findAll { it.kind == 'lib' || it.kind == 'con' }.each { entry ->
+                    entry.entryAttributes['module'] = 'true'
+                }
+            }
+        }
+    }
+}

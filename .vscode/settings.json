@@ -1,6 +1,8 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.compile.nullAnalysis.mode": "automatic",
+    "java.import.gradle.wrapper.enabled": true,
+    "java.gradle.buildServer.enabled": "off",
 
 
 
@@ -8,15 +10,15 @@
         {
             "name": "unit",
             "modulePaths": [
-                "${workspaceFolder}/cascara-common-io/build/modulepath",
+                "${workspaceFolder}/cascara-common-io-lib/build/modulepath",
                 // "${workspaceFolder}/integration-test/build/modulepath",
                 // "${workspaceFolder}/integration-test-fixtures/build/libs"
             ],
             "classPaths": [
-                "${workspaceFolder}/cascara-common-io/build/classes/java/main",
-                "${workspaceFolder}/cascara-common-io/build/resources/main",
-                "${workspaceFolder}/cascara-common-io/build/classes/java/test",
-                "${workspaceFolder}/cascara-common-io/build/resources/test",
+                "${workspaceFolder}/cascara-common-io-lib/build/classes/java/main",
+                "${workspaceFolder}/cascara-common-io-lib/build/resources/main",
+                "${workspaceFolder}/cascara-common-io-lib/build/classes/java/test",
+                "${workspaceFolder}/cascara-common-io-lib/build/resources/test",
                 // "${workspaceFolder}/integration-test/build/classes/java/main",
                 // "${workspaceFolder}/integration-test/build/resources/main",
                 // "${workspaceFolder}/integration-test/build/classes/java/test",

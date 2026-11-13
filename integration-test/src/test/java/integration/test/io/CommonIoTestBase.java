@@ -37,7 +37,7 @@ package integration.test.io;
 import io.github.qishr.cascara.common.content.type.ContentTypeStore;
 import io.github.qishr.cascara.common.service.SPL;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
-import io.github.qishr.cascara.test.common.junit.util.VfsTestBase;
+import io.github.qishr.cascara.test.common.junit.base.VfsTestBase;
 
 public abstract class CommonIoTestBase extends VfsTestBase {
     protected ContentTypeStore contentTypeStore() {

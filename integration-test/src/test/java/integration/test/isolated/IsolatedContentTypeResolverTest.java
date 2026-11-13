@@ -1,35 +1,25 @@
 package integration.test.isolated;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.Duration;
-import java.util.List;
-
-import io.github.qishr.cascara.lang.json.token.JsonToken;
-import org.junit.jupiter.api.Test;
-
-import io.github.qishr.cascara.common.diagnostic.report.GlobalReporter;
-import io.github.qishr.cascara.common.diagnostic.report.LocalReporter;
-import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
-import io.github.qishr.cascara.common.exec.IsolatedExecutor;
-import io.github.qishr.cascara.common.exec.IsolatedExecutor.Response;
-import io.github.qishr.cascara.common.exec.JvmOptions;
-import io.github.qishr.cascara.common.exec.ipc.IpcClient;
-import integration.test.fixtures.isolated.CtrTestInput;
-import integration.test.fixtures.isolated.CtrTestOutput;
-import integration.test.fixtures.isolated.CtrTestTask;
-import io.github.qishr.cascara.common.lang.processor.Serializer;
-import io.github.qishr.cascara.lang.json.processor.JsonAstParser;
-import io.github.qishr.cascara.lang.json.processor.JsonSerializer;
-import io.github.qishr.cascara.lang.json.processor.JsonTokenizer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.time.Duration;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
+
+import integration.test.fixtures.isolated.CtrTestInput;
+import integration.test.fixtures.isolated.CtrTestOutput;
+import integration.test.fixtures.isolated.CtrTestTask;
 import io.github.qishr.cascara.common.data.TextualTable;
+import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
+import io.github.qishr.cascara.common.diagnostic.report.GlobalReporter;
+import io.github.qishr.cascara.common.exec.IsolatedExecutor;
+import io.github.qishr.cascara.common.exec.IsolatedExecutor.Response;
+import io.github.qishr.cascara.common.exec.JvmConfig;
+import io.github.qishr.cascara.common.service.SPL;
 import io.github.qishr.cascara.common.util.StringUtils;
 import io.github.qishr.cascara.common.util.TermUtils;
 import io.github.qishr.cascara.lang.json.token.JsonErrorToken;
@@ -37,7 +27,7 @@ import io.github.qishr.cascara.lang.json.token.JsonToken;
 
 public class IsolatedContentTypeResolverTest extends IsolatedTestBase {
     @Test
-    void test_loadsContentTypeResolver() throws Exception {
+    void test_loadsContentTypeResolver() throws Throwable {
         CtrTestInput input = new CtrTestInput();
 
         // GlobalReporter.forClass(IsolatedContentTypeResolverTest.class)
@@ -50,10 +40,12 @@ public class IsolatedContentTypeResolverTest extends IsolatedTestBase {
 
         boolean ipcDebug = false;
 
-        JvmOptions options = new JvmOptions()
+        JvmConfig config = new JvmConfig()
             .setModuleName(CtrTestTask.class.getModule().getName()) // Forces --module-path launch
             .setModulePath(getModulePath())
-            .setSystemProperty("casc.report.level." + CtrTestTask.class.getName(), "DEBUG")
+            .setSystemProperty("cascara.report.level." + CtrTestTask.class.getName(), "DEBUG")
+
+            .setSystemProperty("cascara.report.level." + SPL.class.getName(), "DEBUG")
             // .setSystemProperty("cascara.ipc.debug", "true")
             // .setSystemProperty(IpcClient.DEBUG_PROP, String.valueOf(ipcDebug))
 
@@ -68,9 +60,9 @@ public class IsolatedContentTypeResolverTest extends IsolatedTestBase {
             .setDebug(PROCESS_DEBUG_ENABLED);
 
         IsolatedExecutor exec = IsolatedExecutor.forTask(CtrTestTask.class, CtrTestOutput.class)
-            .setIpcDebugEnabled(ipcDebug)
-            .setDiagnosticForwardingEnabled(true)
-            .setOptions(options);
+            .setIpcDebug(ipcDebug)
+            .setDiagnosticForwarding(true)
+            .setJvmConfig(config);
 
         // Serializer<?> ipcSerializer = exec.getSerializer();
         // if (ipcSerializer instanceof JsonSerializer serializer) {

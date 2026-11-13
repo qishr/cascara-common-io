@@ -55,15 +55,17 @@ import io.github.qishr.cascara.common.util.ContentTypeResolver;
 import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
 
 public class ContentTypeStore implements ContentTypeResolver {
-    private static final Path registryPath = Cascara.getContentTypesPath();
 
-    private Reporter reporter = new NoOpReporter();
+    private static final Path registryPath = Cascara.instance().getContentTypesPath();
+
+    private Reporter reporter;
     private ContentTypeRegistry contentTypeRegistry;
 
     private ContentTypeStore() {}
 
     @SingletonInitializer
     private void init() {
+        reporter = new NoOpReporter();
         YamlSerializer serializer = new YamlSerializer();
         if (Files.exists(registryPath)) {
             String yamlContent;
@@ -101,7 +103,7 @@ public class ContentTypeStore implements ContentTypeResolver {
     }
 
     @Override
-    public void addAll(List<? extends ContentType> contentTypes) {
+    public void addAll(Collection<? extends ContentType> contentTypes) {
         List<ContentType> allContentTypes = new ArrayList<>(contentTypeRegistry.getRecords());
         for (ContentType type : contentTypes) {
             allContentTypes.add(type);

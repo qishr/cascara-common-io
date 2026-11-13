@@ -19,8 +19,8 @@ dependencies {
     implementation('org.junit.platform:junit-platform-launcher')
     implementation('io.github.qishr:cascara-common')
     implementation('io.github.qishr:cascara-lang-json')
-    implementation('io.github.qishr:cascara-test-common-junit')
-    implementation(project(':cascara-common-io'))
+    // implementation('io.github.qishr:cascara-test-common-junit')
+    implementation(project(':cascara-common-io-lib'))
     // implementation('io.github.qishr:cascara-common-io')
 }
 

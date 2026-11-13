@@ -35,9 +35,9 @@
 
 package io.github.qishr.cascara.common.content.type;
 
-import io.github.qishr.cascara.common.diagnostic.message.DiagnosticMessage;
+import io.github.qishr.cascara.common.diagnostic.message.LocalizableMessage;
 
-public enum ContentTypeMessage implements DiagnosticMessage {
+public enum ContentTypeMessage implements LocalizableMessage {
     REGISTRY_READ_ERROR("CCT-001", "Failed to read content type registry"),
     REGISTRY_UPDATE_ERROR("CCT-002", "Failed to update content type registry");
 

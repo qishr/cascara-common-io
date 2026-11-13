@@ -1,21 +1,41 @@
 {
 	"files": [
 		{
-			"path": "cascara-common-io/src/main/java/io/github/qishr/cascara/common/content/type/ContentTypeStore.java",
+			"path": "cascara-common-io-lib/src/main/java/io/github/qishr/cascara/common/content/type/ContentTypeStore.java",
 			"bookmarks": [
 				{
-					"line": 90,
+					"line": 92,
 					"column": 40,
 					"label": ""
 				}
 			]
 		},
 		{
-			"path": "cascara-common-io/src/main/java/io/github/qishr/cascara/common/io/provider/ResResourceProvider.java",
+			"path": "cascara-common-io-lib/src/main/java/io/github/qishr/cascara/common/io/provider/ResResourceProvider.java",
 			"bookmarks": [
 				{
 					"line": 70,
 					"column": 17,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "integration-test/build.gradle",
+			"bookmarks": [
+				{
+					"line": 27,
+					"column": 31,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "integration-test/src/test/java/integration/test/isolated/IsolatedContentTypeResolverTest.java",
+			"bookmarks": [
+				{
+					"line": 87,
+					"column": 52,
 					"label": ""
 				}
 			]
