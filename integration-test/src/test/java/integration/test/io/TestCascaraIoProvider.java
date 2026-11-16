@@ -37,8 +37,8 @@ package integration.test.io;
 import java.net.URI;
 
 import io.github.qishr.cascara.common.annotation.Priority;
-import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
-import io.github.qishr.cascara.common.diagnostic.exception.UnimplementedMethodException;
+import io.github.qishr.cascara.common.i18n.exception.LocalizableIOException;
+import io.github.qishr.cascara.common.exception.UnimplementedMethodException;
 import io.github.qishr.cascara.common.io.ResourceStream;
 import io.github.qishr.cascara.common.io.provider.AbstractResourceProvider;
 import io.github.qishr.cascara.common.util.UriScheme;

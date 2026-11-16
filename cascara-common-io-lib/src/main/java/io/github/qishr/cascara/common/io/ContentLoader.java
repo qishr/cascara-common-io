@@ -37,7 +37,7 @@ package io.github.qishr.cascara.common.io;
 import java.net.URI;
 
 import io.github.qishr.cascara.common.content.ResourceContent;
-import io.github.qishr.cascara.common.diagnostic.exception.LocalizableIOException;
+import io.github.qishr.cascara.common.i18n.exception.LocalizableIOException;
 
 public interface ContentLoader {
     ResourceContent getContent(URI uri) throws LocalizableIOException;
