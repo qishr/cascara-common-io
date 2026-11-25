@@ -56,7 +56,7 @@ import io.github.qishr.cascara.lang.yaml.processor.YamlSerializer;
 
 public class ContentTypeStore implements ContentTypeResolver {
 
-    private static final Path registryPath = Cascara.instance().getContentTypesPath();
+    private static final Path registryPath = Cascara.get().getContentTypesPath();
 
     private Reporter reporter;
     private ContentTypeRegistry contentTypeRegistry;
@@ -239,7 +239,7 @@ public class ContentTypeStore implements ContentTypeResolver {
         try (StringWriter writer = new StringWriter()){
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
             reporter.error(GenericMessage.IO_ERROR, "Failed to write debug output: " + e.getMessage());
         }
     }

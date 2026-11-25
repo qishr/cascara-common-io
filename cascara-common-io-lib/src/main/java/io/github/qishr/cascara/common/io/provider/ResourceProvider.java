@@ -34,14 +34,14 @@
 
 package io.github.qishr.cascara.common.io.provider;
 
+import java.io.IOException;
 import java.net.URI;
 
-import io.github.qishr.cascara.common.i18n.exception.LocalizableIOException;
 import io.github.qishr.cascara.common.io.ResourceStream;
 import io.github.qishr.cascara.common.service.ServiceProvider;
 
 public interface ResourceProvider extends ServiceProvider {
     public static final String URI_SCHEME = "uriScheme";
 
-    ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException;
+    ResourceStream getResourceAsStream(URI uri) throws IOException;
 }

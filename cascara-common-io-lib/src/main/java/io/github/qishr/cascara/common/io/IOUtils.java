@@ -74,11 +74,11 @@ public class IOUtils {
         providers.put(uriScheme, provider);
     }
 
-    public static InputStream getContentAsStream(URI uri) throws LocalizableIOException {
+    public static InputStream getContentAsStream(URI uri) throws IOException {
         return getResourceAsStream(uri).stream;
     }
 
-    public static ResourceContent getResource(URI uri) throws LocalizableIOException {
+    public static ResourceContent getResource(URI uri) throws IOException {
         ResourceStream res = getResourceAsStream(uri);
         String content;
 		try {
@@ -90,7 +90,7 @@ public class IOUtils {
         return new ResourceContent(content, res.contentType);
     }
 
-    public static ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+    public static ResourceStream getResourceAsStream(URI uri) throws IOException {
         uri = normalizeUri(uri);
         UriScheme scheme = UriScheme.of(uri);
         ResourceProvider provider = getResourceProvider(scheme);
@@ -100,11 +100,11 @@ public class IOUtils {
         return provider.getResourceAsStream(uri);
     }
 
-    public static URI normalizeUri(String string) throws LocalizableIOException {
+    public static URI normalizeUri(String string) throws IOException {
         return normalizeUri(URI.create(string));
     }
 
-    public static URI normalizeUri(URI uri) throws LocalizableIOException {
+    public static URI normalizeUri(URI uri) throws IOException {
         UriScheme scheme = UriScheme.of(uri);
         if (scheme == UriScheme.UNKNOWN) {
             throw new LocalizableIOException(GenericMessage.UNKNOWN_URI_SCHEME, uri);
@@ -120,15 +120,15 @@ public class IOUtils {
     // Convenience methods
     //
 
-    public static InputStream getContentAsStream(String uri) throws LocalizableIOException {
+    public static InputStream getContentAsStream(String uri) throws IOException {
         return getContentAsStream(URI.create(uri));
     }
 
-    public static ResourceContent getResource(String uri) throws LocalizableIOException {
+    public static ResourceContent getResource(String uri) throws IOException {
         return getResource(URI.create(uri));
     }
 
-    public static ResourceStream getResourceAsStream(String uri) throws LocalizableIOException {
+    public static ResourceStream getResourceAsStream(String uri) throws IOException {
         return getResourceAsStream(URI.create(uri));
     }
 
@@ -137,7 +137,7 @@ public class IOUtils {
     //
 
     @Nullable
-    private static ResourceProvider getResourceProvider(UriScheme scheme) throws LocalizableIOException {
+    private static ResourceProvider getResourceProvider(UriScheme scheme) throws IOException {
         ResourceProvider provider = providers.get(scheme);
         if (provider == null) {
             if (scheme == UriScheme.RES) {

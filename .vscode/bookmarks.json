@@ -14,7 +14,7 @@
 			"path": "cascara-common-io-lib/src/main/java/io/github/qishr/cascara/common/io/provider/ResResourceProvider.java",
 			"bookmarks": [
 				{
-					"line": 70,
+					"line": 71,
 					"column": 17,
 					"label": ""
 				}
@@ -34,7 +34,7 @@
 			"path": "integration-test/src/test/java/integration/test/isolated/IsolatedContentTypeResolverTest.java",
 			"bookmarks": [
 				{
-					"line": 87,
+					"line": 89,
 					"column": 52,
 					"label": ""
 				}

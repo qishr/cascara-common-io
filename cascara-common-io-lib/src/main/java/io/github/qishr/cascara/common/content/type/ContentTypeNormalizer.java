@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.diagnostic.report.NoOpReporter;
 import io.github.qishr.cascara.common.diagnostic.report.Reporter;
-import io.github.qishr.cascara.common.exception.UnexpectedNullParameterException;
+import io.github.qishr.cascara.common.exception.UnexpectedNullValueException;
 import io.github.qishr.cascara.common.diagnostic.message.GenericMessage;
 import io.github.qishr.cascara.common.util.ContentType;
 
@@ -89,7 +89,7 @@ public final class ContentTypeNormalizer {
     }
 
     private boolean hasConcreteMimeType(ContentType ct) {
-        if (ct == null) throw new UnexpectedNullParameterException("ct");
+        if (ct == null) throw new UnexpectedNullValueException("ct");
         return ct.getMimeTypes().stream()
                  .anyMatch(m -> !m.endsWith("/*") && !m.equals("*/*"));
     }
@@ -290,7 +290,7 @@ public final class ContentTypeNormalizer {
         try (StringWriter writer = new StringWriter()){
             table.render(writer);
             reporter.debug("Canonical Content Types\n" + writer.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
             reporter.error(GenericMessage.IO_ERROR, "Failed to write debug output: " + e.getMessage());
         }
     }

@@ -2,13 +2,14 @@ package integration.test.fixtures.isolated;
 
 import io.github.qishr.cascara.common.content.type.ContentTypeStore;
 import io.github.qishr.cascara.common.diagnostic.report.GlobalReporter;
+import io.github.qishr.cascara.common.diagnostic.report.Reporter;
 import io.github.qishr.cascara.common.exec.AbstractExecutionTask;
 import io.github.qishr.cascara.common.service.SPL;
 import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.util.ContentTypeResolver;
 
 public class CtrTestTask extends AbstractExecutionTask<CtrTestInput, CtrTestOutput> {
-    GlobalReporter reporter = GlobalReporter.forClass(CtrTestTask.class);
+    Reporter reporter = Reporter.forClass(CtrTestTask.class);
 
     @Override
     public CtrTestOutput run(CtrTestInput input) throws Exception {

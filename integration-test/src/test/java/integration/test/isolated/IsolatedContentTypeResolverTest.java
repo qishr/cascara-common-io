@@ -15,17 +15,19 @@ import integration.test.fixtures.isolated.CtrTestOutput;
 import integration.test.fixtures.isolated.CtrTestTask;
 import io.github.qishr.cascara.common.data.TextualTable;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
+import io.github.qishr.cascara.common.diagnostic.format.LogFormatConfig;
 import io.github.qishr.cascara.common.diagnostic.report.GlobalReporter;
 import io.github.qishr.cascara.common.exec.IsolatedExecutor;
 import io.github.qishr.cascara.common.exec.IsolatedExecutor.Response;
 import io.github.qishr.cascara.common.exec.JvmConfig;
 import io.github.qishr.cascara.common.service.SPL;
 import io.github.qishr.cascara.common.util.StringUtils;
-import io.github.qishr.cascara.common.util.TermUtils;
 import io.github.qishr.cascara.lang.json.token.JsonErrorToken;
 import io.github.qishr.cascara.lang.json.token.JsonToken;
 
 public class IsolatedContentTypeResolverTest extends IsolatedTestBase {
+    private static final String ANSI_WHITE = "\u001B[37m";
+
     @Test
     void test_loadsContentTypeResolver() throws Throwable {
         CtrTestInput input = new CtrTestInput();
@@ -34,15 +36,16 @@ public class IsolatedContentTypeResolverTest extends IsolatedTestBase {
         //     .setShowProblemCodes(true)
         //     .setLevel(Level.DEBUG);
 
+        LogFormatConfig.get().setIncludeProblemCodes(true);
+
         GlobalReporter.forClass(CtrTestTask.class)
-            .setShowProblemCodes(true)
             .setLevel(Level.DEBUG);
 
         boolean ipcDebug = false;
 
         JvmConfig config = new JvmConfig()
             .setModuleName(CtrTestTask.class.getModule().getName()) // Forces --module-path launch
-            .setModulePath(getModulePath())
+            .setModulePath(getJvmModulePath())
             .setSystemProperty("cascara.report.level." + CtrTestTask.class.getName(), "DEBUG")
 
             .setSystemProperty("cascara.report.level." + SPL.class.getName(), "DEBUG")
@@ -116,7 +119,7 @@ public class IsolatedContentTypeResolverTest extends IsolatedTestBase {
         TextualTable table = new TextualTable()
                 .setStyle(TextualTable.Style.ROUNDED)
                 .setMaxColumnWidth(maxColumnWidth)
-                .setBorderColor(TermUtils.ANSI_WHITE)
+                .setBorderColor(ANSI_WHITE)
                 .addColumn("#")
                 .addColumn("Token")
                 .addColumn("Location")

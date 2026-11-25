@@ -26,7 +26,7 @@ public class IsolatedTestBase extends VfsTestBase {
     protected static final boolean PROCESS_DEBUG_ENABLED = false;
 
     @BeforeEach
-    protected void setUp() throws IOException {
+    protected void setUp() {
 
 
         // GlobalReporter.globalInstance().setLevel(SPL.class.getName(), Level.TRACE);
@@ -40,7 +40,7 @@ public class IsolatedTestBase extends VfsTestBase {
         super.tearDown();
     }
 
-    protected String getModulePath() {
+    protected String getJvmModulePath() {
         Pair<String,String> mp = ArtifactResolver.buildModulePath(
             List.of("cascara-common", "cascara-common-io", "integration-fixtures", "cascara-lang-yaml", "cascara-lang-json"),
             IsolatedTestBase.class

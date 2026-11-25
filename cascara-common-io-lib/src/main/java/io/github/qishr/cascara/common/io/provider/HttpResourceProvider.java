@@ -63,7 +63,7 @@ public class HttpResourceProvider extends AbstractResourceProvider {
     }
 
     @Override
-    public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+    public ResourceStream getResourceAsStream(URI uri) throws IOException {
         try {
             HttpClient client = HttpClient.newBuilder()
                     .followRedirects(HttpClient.Redirect.NORMAL)

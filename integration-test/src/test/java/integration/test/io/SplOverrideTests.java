@@ -65,7 +65,7 @@ public class SplOverrideTests extends CommonIoTestBase {
     void test_splPrefsOverridesSystemIoProvider() throws IOException {
         spl.registerClass(TestContentTypeStore.class);
 
-        Path propsFile = Cascara.instance().getSplPropertiesPath();
+        Path propsFile = Cascara.get().getSplPropertiesPath();
         Files.writeString(
             propsFile,
             TestContentTypeStore.class.getName() + "=" +

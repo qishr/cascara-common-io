@@ -34,6 +34,7 @@
 
 package integration.test.io;
 
+import java.io.IOException;
 import java.net.URI;
 
 import io.github.qishr.cascara.common.annotation.Priority;
@@ -51,7 +52,7 @@ public class TestCascaraIoProvider extends AbstractResourceProvider {
     }
 
     @Override
-    public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+    public ResourceStream getResourceAsStream(URI uri) throws IOException {
         throw new UnimplementedMethodException();
     }
 

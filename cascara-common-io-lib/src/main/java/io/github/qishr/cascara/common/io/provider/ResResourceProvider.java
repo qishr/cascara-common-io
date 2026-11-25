@@ -34,6 +34,7 @@
 
 package io.github.qishr.cascara.common.io.provider;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -62,7 +63,7 @@ public class ResResourceProvider extends AbstractResourceProvider  {
     }
 
     @Override
-    public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+    public ResourceStream getResourceAsStream(URI uri) throws IOException {
         String path = uri.getSchemeSpecificPart().replace("//", "");
         InputStream is = JreUtils.getResourceAsStream(clazz, path);
 

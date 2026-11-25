@@ -53,7 +53,7 @@ public class FileResourceProvider extends AbstractResourceProvider {
     }
 
     @Override
-    public ResourceStream getResourceAsStream(URI uri) throws LocalizableIOException {
+    public ResourceStream getResourceAsStream(URI uri) throws IOException {
         try {
             Path path = Path.of(uri);
             return new ResourceStream(Files.newInputStream(path), null);
